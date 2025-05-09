@@ -1,6 +1,6 @@
 from datetime import datetime,date,timedelta
-from dailyhabit import DailyHabit
-from habit import Habit
+from habittracker.dailyhabit import DailyHabit
+from habittracker.habit import Habit
 
 
 class WeeklyHabit(Habit):

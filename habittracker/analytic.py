@@ -1,7 +1,7 @@
-from database import HabitDataStorage,JsonDatabase
-from habit import Habit
-from dailyhabit import DailyHabit
-from weeklyhabit import WeeklyHabit
+from habittracker.database import HabitDataStorage,JsonDatabase
+from habittracker.habit import Habit
+from habittracker.dailyhabit import DailyHabit
+from habittracker.weeklyhabit import WeeklyHabit
 
 class HabitAnalyzer:
     def __init__(self):

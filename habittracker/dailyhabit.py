@@ -1,5 +1,5 @@
 from datetime import datetime,date,timedelta
-from habit import Habit
+from habittracker.habit import Habit
 
 class DailyHabit(Habit):
     """A subclass of Habit class which represents daily habit."""

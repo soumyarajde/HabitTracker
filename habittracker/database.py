@@ -1,7 +1,7 @@
 import json
-from habit import Habit
-from dailyhabit import DailyHabit
-from weeklyhabit import WeeklyHabit
+from habittracker.habit import Habit
+from habittracker.dailyhabit import DailyHabit
+from habittracker.weeklyhabit import WeeklyHabit
 
 class HabitDataStorage:
     """Manages habit data saving and loading.
