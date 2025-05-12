@@ -8,10 +8,10 @@ class HabitManager:
     """Manages all habits.
     Attributes:habits{Habit}:a dictionary of Habit class objects.
                 databse:HabitDataStorage:an instance of HabitDataStorage used for databse operations."""
-    def __init__(self):
+    def __init__(self,filename='db.json'):
         """Initialize HabitManager object."""
         self.habits={}
-        self.database=JsonDatabase('db.json')
+        self.database=JsonDatabase(str(filename))
         self.habits=self.database.retrieve_data()
 
     def create_habit(self,name=None,description=None,periodicity=None):
@@ -23,38 +23,45 @@ class HabitManager:
                 temp_habit=WeeklyHabit(name,description)
                 self.habits.update({name.lower():temp_habit})
             else:
-                print("Unknown periodicity.")
-            
+                raise ValueError("Unknown periodicity.")
         else:   
-            print("Habit already exists")
+            raise ValueError("Habit already exists")
+            
         self.database.save_data(self.habits)
 
-    def delete_habit(self,name):
+    def delete_habit(self,name=None):
         """Deletes a given habit."""
         if name.lower()in self.habits:
             self.habits.pop(name.lower())
-            print(f"{name} deleted successfully")
         else:
-            print(f"Habit {name} does not exist.")
+            raise ValueError("Habit does not exist.")
         self.database.save_data(self.habits)
 
-    def deactivate_habit(self,name):
+    def deactivate_habit(self,name=None):
         """Deactivates a habit.Arg:name(str):name of the habit"""
         if name.lower() in self.habits:
             self.habits[name.lower()].deactivate_habit()
+        else:
+            raise ValueError("Habit does not exist.")
         self.database.save_data(self.habits)
 
-    def activate_habit(self,name):
+    def activate_habit(self,name=None):
         """Activates a habit.Arg:name(str):name of the habit"""
         if name.lower() in self.habits:
             self.habits[name.lower()].activate_habit()
+        else:
+            raise ValueError("Habit does not exist.")
+
         self.database.save_data(self.habits)
 
-    def check_off(self,name,date):
+    def check_off(self,name=None,date=date.today()):
         """Marks a habit as completed and add date to the completed dates list."""
         if name.lower() in self.habits:
             self.habits[name.lower()].check_off(date)
+        else:
+            raise ValueError("Habit does not exist.")
         self.database.save_data(self.habits)
+
 
     def view_habit(self):
         """Show all habits."""
@@ -63,7 +70,7 @@ class HabitManager:
 
 
             
-    
+    # ToDo delete or replace all prints
 
 
 

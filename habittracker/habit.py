@@ -65,7 +65,6 @@ class Habit:
 
     def calculate_streak(self):
         raise NotImplementedError
-    #TODO calculate streak function shoudd be definded here with empty code, also should use the same function signature
 
 
 

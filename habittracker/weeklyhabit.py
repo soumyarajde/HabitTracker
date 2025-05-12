@@ -1,5 +1,4 @@
 from datetime import datetime,date,timedelta
-from habittracker.dailyhabit import DailyHabit
 from habittracker.habit import Habit
 
 
