@@ -1,4 +1,4 @@
-from datetime import timedelta
+from datetime import date,timedelta
 from functools import reduce
 from habittracker.database import HabitDataStorage,JsonDatabase
 from habittracker.habit import Habit
@@ -6,13 +6,13 @@ from habittracker.dailyhabit import DailyHabit
 from habittracker.weeklyhabit import WeeklyHabit
 
 class HabitAnalyzer:
-    def __init__(self):
-        self.database=JsonDatabase('db.json')
+    def __init__(self,file_path='db.json'):
+        self.database=JsonDatabase(str(file_path))
         self.habits=self.database.retrieve_data()
 
-    def get_streak(self,name):
+    def get_streak(self,name,date):
         if name.lower() in self.habits:
-            return self.habits[name.lower()].calculate_streak()
+            return self.habits[name.lower()].calculate_streak(date)
         else:
             raise ValueError("Habit does not exist.")
         
@@ -22,7 +22,7 @@ class HabitAnalyzer:
     def get_habits_with_same_period(self):
         return {
             'Daily Habits':list(map(lambda habit:habit[0],filter(lambda habit:isinstance(habit[1],DailyHabit),self.habits.items()))),
-           ' Weekly Habits':list(map(lambda habit:habit[0],filter(lambda habit:isinstance(habit[1],WeeklyHabit),self.habits.items()))),
+           'Weekly Habits':list(map(lambda habit:habit[0],filter(lambda habit:isinstance(habit[1],WeeklyHabit),self.habits.items()))),
         }
     
     def get_longest_streak(self,name):
@@ -62,7 +62,10 @@ class HabitAnalyzer:
                     return acc
                 result=reduce(reducer,range(1,len(weeks)),{"current":1,"max":1})
 
-        return result['max']
+            return result['max']
+        else:
+            raise ValueError("Habit does not exist.")
+    
     
     def get_longest_streak_all(self):
             return dict(
@@ -71,7 +74,7 @@ class HabitAnalyzer:
 if __name__=='__main__':
   
    ha=HabitAnalyzer()
-   #streak=ha.get_streak("reading")
+   #streak=ha.get_streak("sleeping",date=date(2025,5,7))
    #print(streak)
-   #print(ha.get_currently_tracked_habits())
-   print(ha.get_longest_streak_all())
+   print(ha.get_habits_with_same_period())
+   #print(ha.get_longest_streak_all())
