@@ -10,7 +10,7 @@ class HabitAnalyzer:
         self.database=JsonDatabase(str(file_path))
         self.habits=self.database.retrieve_data()
 
-    def get_streak(self,name,date):
+    def get_streak(self,name,date=date.today()):
         if name.lower() in self.habits:
             return self.habits[name.lower()].calculate_streak(date)
         else:

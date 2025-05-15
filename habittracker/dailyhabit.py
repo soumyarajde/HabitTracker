@@ -7,13 +7,14 @@ class DailyHabit(Habit):
         super().__init__(name,description,creation_date,active)
 
 
-    def calculate_streak(self):
+    def calculate_streak(self,date=date.today()):
         """Calculate current streak for a given habit.If today is not in the completed dates then return the streak of yesterday."""
         if not self.completed_dates:
             return 0
-        today_flag=date.today()in self.completed_dates
+        
         streak=0
-        today=date.today()
+        today=date
+        today_flag=today in self.completed_dates
         if not today_flag:
             today=today-timedelta(days=1)
         

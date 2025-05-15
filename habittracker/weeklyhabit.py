@@ -8,13 +8,13 @@ class WeeklyHabit(Habit):
         super().__init__(name,description,creation_date,active)
 
     
-    def calculate_streak(self):
+    def calculate_streak(self,date=date.today()):
         """Calculate and return current streak of a weekly habit.If no check off for current week return streak of previous week."""
        
         if not self.completed_dates:
             return 0
         strek=0
-        today=date.today()
+        today=date
         completed_dates=set(self.completed_dates)
         #starts checking from the current week and go backward.
         #week starts on monday
