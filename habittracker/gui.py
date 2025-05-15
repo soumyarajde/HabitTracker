@@ -17,27 +17,27 @@ class ApplicationGui:
         self.notebook.pack(expand=True, fill='both')
 
         # Tab 1: Habit Manager
-        self.manager_tab = ttk.Frame(self.notebook)
-        self.notebook.add(self.manager_tab, text="Habit Manager")
-        self.build_habit_manager_tab(self.manager_tab)
+        manager_tab = ttk.Frame(self.notebook)
+        self.notebook.add(manager_tab, text="Habit Manager")
+        self.build_habit_manager_tab(manager_tab)
 
         # Tab 2: Analyzer
-        self.analyzer_tab = ttk.Frame(self.notebook)
-        self.notebook.add(self.analyzer_tab, text="Analyzer")
-        self.build_analyzer_tab(self.analyzer_tab)
+        analyzer_tab = ttk.Frame(self.notebook)
+        self.notebook.add(analyzer_tab, text="Analyzer")
+        self.build_analyzer_tab(analyzer_tab)
 
     def on_click(self):
         print("Button was clicked!")
 
-    def build_habit_manager_tab(self,gui):
+    def build_habit_manager_tab(self,tab):
         #create button to show Create New
-        self.btn_create_habit=ttk.Button(gui,text="Create New",command=self.on_click_btn_create_habit)
+        self.btn_create_habit=ttk.Button(tab,text="Create New",command=self.on_click_btn_create_habit)
         self.btn_create_habit.pack(pady=10)
         #create view button
-        self.btn_view_habit=ttk.Button(gui,text="View",command=self.on_click_btn_view_habit)
+        self.btn_view_habit=ttk.Button(tab,text="View",command=self.on_click_btn_view_habit)
         self.btn_view_habit.pack(pady=10)
-        self.habit_list_container=ttk.Frame(gui)
-        self.create_form_fields=ttk.Frame(gui)
+        self.habit_list_container=ttk.Frame(tab)
+        self.create_form_fields=ttk.Frame(tab)
 
     def on_click_btn_create_habit(self):
         self.habit_list_container.pack_forget()
@@ -108,28 +108,11 @@ class ApplicationGui:
             tk.Button(row,text=status,command=lambda name=name:self.status_change_habit(name)).pack(side="right")
 
     def delete_habit(self,name):
-        print("Delete")
+        #print("Delete")
         self.manager.delete_habit(name=name)
         self.show_habits()
 
-    def check_off(self,name):      # if selected_enum==AnalyzerOptions.CURRENT_STREAK:
-        #     self.habit_list_drop_down["values"]=[name.upper()for name,habit in self.manager.habits.items()]
-        #     self.habit_list_drop_down.current(0)
-        #     self.habit_list_drop_down.pack()
-        #     self.habit_list_drop_down.bind("<<ComboboxSelected>>",self.get_streak)
-        # elif selected_enum==AnalyzerOptions.CURRENTLY_TRACKED_HABITS:
-        #     self.currently_tracked_habits()
-        # elif selected_enum==AnalyzerOptions.DAILY_HABITS:
-        #     self.show_daily_habits()
-        # elif selected_enum==AnalyzerOptions.WEEKLY_HABITS:
-        #     self.show_weekly_habits()
-        # elif selected_enum==AnalyzerOptions.LONGEST_STREAK:
-        #     self.habit_list_drop_down["values"]=[name.upper()for name,habit in self.manager.habits.items()]
-        #     self.habit_list_drop_down.current(0)
-        #     self.habit_list_drop_down.pack()
-        #     self.habit_list_drop_down.bind("<<ComboboxSelected>>",self.get_longest_streak)
-        # elif selected_enum==AnalyzerOptions.LONGEST_STREAK_ALL:
-        #     self.longest_streak_all()
+    def check_off(self,name):      
         self.manager.check_off(name)
         self.show_habits()
 
@@ -142,53 +125,112 @@ class ApplicationGui:
 
    
         
-    def build_analyzer_tab(self,gui):
+    def build_analyzer_tab(self,tab):
         #create a drop down
-        self.analysis_drop_down=ttk.Combobox(gui,values=[option.value for option in AnalyzerOptions] ,state="readonly")
+        self.analysis_drop_down=ttk.Combobox(tab,values=[option.value for option in AnalyzerOptions] ,state="readonly")
         self.analysis_drop_down.current(0)
         self.analysis_drop_down.pack(pady=10)
         self.analysis_drop_down.bind("<<ComboboxSelected>>",self.on_select_analysis)
-        #create a submit button
-        # btn_submit=ttk.Button(gui,text="Submit",command=self.on_click_btn_submit)
-        # btn_submit.pack(pady=20)
-        #create another drop down to show habit list when choose current streak.
-        #This drop down is hidden initially
-        # self.habit_list_drop_down=ttk.Combobox(gui,state="readonly")
-        # self.habit_list_drop_down.pack(pady=10)
-        # self.habit_list_drop_down.pack_forget()
+        #create another drop down to show habit list.
+        #This drop down is hidden initially.
+        self.habit_list_drop_down=ttk.Combobox(tab,state="readonly")
+        self.habit_list_drop_down.pack(pady=10)
+        self.habit_list_drop_down.pack_forget()
+        #create a label to display result of streak calculation.This is also hidden initially
+        self.result_label=ttk.Label(tab,text=f"")
+        self.result_label.pack_forget()
+        #create a list box to disply list of values in the result.This is hidden initially.
+        self.habits_list=tk.Listbox(tab)
+
+
 
     def on_select_analysis(self,evnt):
         selection=self.analysis_drop_down.get()
-        selected_enum=AnalyzerOptions(selection)             
+        selected_enum=AnalyzerOptions(selection)
                                                          
         if selected_enum==AnalyzerOptions.CURRENT_STREAK:
+            self.habits_list.pack_forget()
+            self.result_label.pack_forget()
             self.habit_list_drop_down["values"]=[name.upper()for name,habit in self.manager.habits.items()]
             self.habit_list_drop_down.current(0)
             self.habit_list_drop_down.pack()
-            self.habit_list_drop_down.bind("<<ComboboxSelected>>",self.get_streak)
+            self.habit_list_drop_down.bind("<<ComboboxSelected>>",self.show_streak)
         elif selected_enum==AnalyzerOptions.CURRENTLY_TRACKED_HABITS:
-            self.currently_tracked_habits()
+            self.habit_list_drop_down.pack_forget()
+            self.result_label.pack_forget()
+            self.show_currently_tracked_habits()
         elif selected_enum==AnalyzerOptions.DAILY_HABITS:
+            self.result_label.pack_forget()
+            self.habit_list_drop_down.pack_forget()
             self.show_daily_habits()
         elif selected_enum==AnalyzerOptions.WEEKLY_HABITS:
+            self.result_label.pack_forget()
+            self.habit_list_drop_down.pack_forget()
             self.show_weekly_habits()
         elif selected_enum==AnalyzerOptions.LONGEST_STREAK:
+            self.habits_list.pack_forget()
+            self.result_label.pack_forget()
             self.habit_list_drop_down["values"]=[name.upper()for name,habit in self.manager.habits.items()]
             self.habit_list_drop_down.current(0)
             self.habit_list_drop_down.pack()
-            self.habit_list_drop_down.bind("<<ComboboxSelected>>",self.get_longest_streak)
+            self.habit_list_drop_down.bind("<<ComboboxSelected>>",self.show_longest_streak)
         elif selected_enum==AnalyzerOptions.LONGEST_STREAK_ALL:
-            self.longest_streak_all()
+            self.habit_list_drop_down.pack_forget()
+            self.result_label.pack_forget()
+            self.show_longest_streak_all()
+        else:
+            self.habit_list_drop_down.pack_forget()
+            self.result_label.pack_forget()
+            self.habits_list.pack_forget()
+
     
     
 
         
-    def get_streak(self,gui):
+    def show_streak(self,evnt):
         habit_name=self.habit_list_drop_down.get()
         current_streak=self.analyzer.get_streak(name=habit_name)
-        result_label=ttk.Label(gui,text=f"current streak={current_streak}")
-        result_label.pack()
+        self.result_label.configure(text=f"Current streak of {habit_name} : {current_streak}")
+        self.result_label.pack()
+        
+    def show_longest_streak(self,evnt):
+        habit_name=self.habit_list_drop_down.get()
+        longest_streak=self.analyzer.get_longest_streak(name=habit_name)
+        self.result_label.configure(text=f"Longest streak of {habit_name} : {longest_streak}")
+        self.result_label.pack()
 
+
+    def show_currently_tracked_habits(self):
+        currently_tracked_habits=self.analyzer.get_currently_tracked_habits()
+        self.habits_list.delete(0,tk.END)
+        for habit in currently_tracked_habits:
+            self.habits_list.insert(tk.END,habit.upper())
+        self.habits_list.pack()
+
+    def show_daily_habits(self):
+        habits=self.analyzer.get_habits_with_same_period()
+        self.habits_list.delete(0,tk.END)
+        for habit in habits['Daily Habits']:
+            self.habits_list.insert(tk.END,habit.upper())
+        self.habits_list.pack()
+
+    def show_weekly_habits(self):
+        habits=self.analyzer.get_habits_with_same_period()
+        self.habits_list.delete(0,tk.END)
+        for habit in habits['Weekly Habits']:
+            self.habits_list.insert(tk.END,habit.upper())
+        self.habits_list.pack()
+
+    def show_longest_streak_all(self):
+        longest_streak=self.analyzer.get_longest_streak_all()
+        self.habits_list.delete(0,tk.END)
+        for habit,streak in longest_streak.items():
+            self.habits_list.insert(tk.END,(habit,streak))
+        self.habits_list.pack()
+
+    
+
+        
 
 
     
