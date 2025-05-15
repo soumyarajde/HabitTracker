@@ -1,5 +1,5 @@
 import pytest
-from datetime import timedelta
+from datetime import timedelta,date
 from functools import reduce
 from habittracker.database import HabitDataStorage,JsonDatabase
 from habittracker.habit import Habit
@@ -30,5 +30,8 @@ def test_longest_streak_non_existent_habit(test_analyzer):
         test_analyzer.get_longest_streak("nonexistent")
     assert str(exc_info.value)=="Habit does not exist."
 
-# def test_get_streak(test_analyzer):
-#     assert test_analyzer.get_streak("sleeping")==0
+def test_get_streak(test_analyzer):
+    assert test_analyzer.get_streak("sleeping",date=date(2025,5,7))==7
+    assert test_analyzer.get_streak("reading",date=date(2025,5,7))==1
+    assert test_analyzer.get_streak("sleeping",date=date(2025,5,5))==5
+    assert test_analyzer.get_streak("shopping",date=date(2025,5,7))==2

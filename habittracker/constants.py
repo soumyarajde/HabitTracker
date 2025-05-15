@@ -5,9 +5,9 @@ class Periodicity(str,Enum):
 
 class AnalyzerOptions(str,Enum):
     DEFAULT_OPTION="Select an analysis"
-    CURRENT_STREAK="Current streak"
-    LONGEST_STREAK="Longest streak"
-    DAILY_HABITS="Daily habits"
-    WEEKLY_HABITS="Weekly habits"
-    LONGEST_STREAK_ALL="Longest Streak All"
-    CURRENTLY_TRACKED_HABITS="Currently Tracked habits"
+    CURRENT_STREAK="Show current streak"
+    LONGEST_STREAK="Show longest streak"
+    DAILY_HABITS="Show daily habits"
+    WEEKLY_HABITS="Show weekly habits"
+    LONGEST_STREAK_ALL="Show longest streak All"
+    CURRENTLY_TRACKED_HABITS="Show currently tracked habits"
