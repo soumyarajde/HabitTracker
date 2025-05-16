@@ -8,6 +8,7 @@ from habittracker.analyzer import HabitAnalyzer
 class ApplicationGui:
     def __init__(self,gui):
         gui.title("Habit Tracker")
+        gui.geometry("400x300")
         self.manager=HabitManager()
         self.analyzer=HabitAnalyzer()
 
@@ -47,18 +48,18 @@ class ApplicationGui:
 
         #Name
         ttk.Label(self.create_form_fields,text='Name').grid(row=0,column=0,sticky="w")
-        self.name_entry=ttk.Entry(self.create_form_fields)
+        self.name_entry=ttk.Entry(self.create_form_fields,width=30)
         self.name_entry.grid(row=0,column=1)
 
         #Description
         ttk.Label(self.create_form_fields,text='Description').grid(row=1,column=0,sticky="w")
-        self.desc_entry=ttk.Entry(self.create_form_fields)
+        self.desc_entry=ttk.Entry(self.create_form_fields,width=30)
         self.desc_entry.grid(row=1,column=1)
 
         #label Periodicity
         ttk.Label(self.create_form_fields,text='Periodicity').grid(row=2,column=0,sticky="w")
         # pariodicity values drop down
-        self.period_drop_down=ttk.Combobox(self.create_form_fields,values=[p.value for p in Periodicity],state="readonly")
+        self.period_drop_down=ttk.Combobox(self.create_form_fields,values=[p.value for p in Periodicity],state="readonly",width=30)
         self.period_drop_down.current(0)
         self.period_drop_down.grid(row=2,column=1)
 
@@ -66,8 +67,8 @@ class ApplicationGui:
         self.btn_create=ttk.Button(self.create_form_fields,text="Create",command=self.create_habit)
         self.btn_create.grid(row=3,columnspan=2,pady=10)
     
-    def create_habit_success_msg(self):
-        messagebox.showinfo("Greetings!","Habit created successfully.")
+    # def show_success_msg_popup(self,msg):
+    #     messagebox.showinfo("Greetings!","Habit created successfully.")
     
     def create_habit_error_msg(self):
         messagebox.showerror("Error","Please fill all the fields.")
@@ -78,10 +79,11 @@ class ApplicationGui:
         period=self.period_drop_down.get()
         #input validation
         if not name or not desc or not period:
-            self.create_habit_error_msg()
+            messagebox.showerror("Error","Please fill all the fields.")
+
         else:
             self.manager.create_habit(name=name,description=desc,periodicity=period)
-            self.create_habit_success_msg()
+            messagebox.showinfo("Success", "Habit created successfully.")
         self.create_form_fields.pack_forget()
 
     def on_click_btn_view_habit(self):
@@ -98,23 +100,27 @@ class ApplicationGui:
         for name,habit in self.manager.habits.items():
             row=tk.Frame(self.habit_list_container)
             row.pack(fill="x",pady=2)
-            tk.Label(row,text=habit.name.upper(),width='20',anchor="w").pack(side="left")
+            tk.Label(row,text=habit.name.upper(),width='10',anchor="w").pack(side="left")
             # create check off button
-            tk.Button(row,text='Check off',command=lambda name=name:self.check_off(name)).pack(side="right")
+            tk.Button(row,text='Check off',width='10',command=lambda name=name:self.check_off(name)).pack(side="right")
             #Create Delete button
-            tk.Button(row,text='Delete',command=lambda name=name:self.delete_habit(name)).pack(side="right")
+            tk.Button(row,text='Delete',width='10',command=lambda name=name:self.delete_habit(name)).pack(side="right")
             #Create Activate/Deactivate button
             status="Activate" if not habit.active else "Deactivate"
-            tk.Button(row,text=status,command=lambda name=name:self.status_change_habit(name)).pack(side="right")
+            tk.Button(row,text=status,width='10',command=lambda name=name:self.status_change_habit(name)).pack(side="right")
 
     def delete_habit(self,name):
         #print("Delete")
         self.manager.delete_habit(name=name)
         self.show_habits()
 
-    def check_off(self,name):      
-        self.manager.check_off(name)
-        self.show_habits()
+    def check_off(self,name):
+        try: 
+            self.manager.check_off(name)
+            self.show_habits()
+        except ValueError as e:
+            messagebox.showerror("Error",e)
+
 
     def status_change_habit(self,name):
         if self.manager.habits[name].active:
@@ -127,7 +133,8 @@ class ApplicationGui:
         
     def build_analyzer_tab(self,tab):
         #create a drop down
-        self.analysis_drop_down=ttk.Combobox(tab,values=[option.value for option in AnalyzerOptions] ,state="readonly")
+        analysis_drop_down_width=max(len(option.value )for option in AnalyzerOptions)
+        self.analysis_drop_down=ttk.Combobox(tab,values=[option.value for option in AnalyzerOptions] ,width=analysis_drop_down_width,state="readonly")
         self.analysis_drop_down.current(0)
         self.analysis_drop_down.pack(pady=10)
         self.analysis_drop_down.bind("<<ComboboxSelected>>",self.on_select_analysis)
@@ -146,35 +153,39 @@ class ApplicationGui:
 
     def on_select_analysis(self,evnt):
         selection=self.analysis_drop_down.get()
-        selected_enum=AnalyzerOptions(selection)
+        selected_analysis=AnalyzerOptions(selection)
+        habits=[name.upper()for name,habit in self.manager.habits.items()]
+        habit_drop_down_options=['Select a habit']+habits
+        width_drop_down=max(len(option)for option in habit_drop_down_options)
                                                          
-        if selected_enum==AnalyzerOptions.CURRENT_STREAK:
+        if selected_analysis==AnalyzerOptions.CURRENT_STREAK:
             self.habits_list.pack_forget()
             self.result_label.pack_forget()
-            self.habit_list_drop_down["values"]=[name.upper()for name,habit in self.manager.habits.items()]
+            self.habit_list_drop_down["values"]=habit_drop_down_options
+            self.habit_list_drop_down["width"]=width_drop_down
             self.habit_list_drop_down.current(0)
             self.habit_list_drop_down.pack()
             self.habit_list_drop_down.bind("<<ComboboxSelected>>",self.show_streak)
-        elif selected_enum==AnalyzerOptions.CURRENTLY_TRACKED_HABITS:
+        elif selected_analysis==AnalyzerOptions.CURRENTLY_TRACKED_HABITS:
             self.habit_list_drop_down.pack_forget()
             self.result_label.pack_forget()
             self.show_currently_tracked_habits()
-        elif selected_enum==AnalyzerOptions.DAILY_HABITS:
+        elif selected_analysis==AnalyzerOptions.DAILY_HABITS:
             self.result_label.pack_forget()
             self.habit_list_drop_down.pack_forget()
             self.show_daily_habits()
-        elif selected_enum==AnalyzerOptions.WEEKLY_HABITS:
+        elif selected_analysis==AnalyzerOptions.WEEKLY_HABITS:
             self.result_label.pack_forget()
             self.habit_list_drop_down.pack_forget()
             self.show_weekly_habits()
-        elif selected_enum==AnalyzerOptions.LONGEST_STREAK:
+        elif selected_analysis==AnalyzerOptions.LONGEST_STREAK:
             self.habits_list.pack_forget()
             self.result_label.pack_forget()
-            self.habit_list_drop_down["values"]=[name.upper()for name,habit in self.manager.habits.items()]
+            self.habit_list_drop_down["values"]=habit_drop_down_options
             self.habit_list_drop_down.current(0)
             self.habit_list_drop_down.pack()
             self.habit_list_drop_down.bind("<<ComboboxSelected>>",self.show_longest_streak)
-        elif selected_enum==AnalyzerOptions.LONGEST_STREAK_ALL:
+        elif selected_analysis==AnalyzerOptions.LONGEST_STREAK_ALL:
             self.habit_list_drop_down.pack_forget()
             self.result_label.pack_forget()
             self.show_longest_streak_all()
@@ -189,17 +200,23 @@ class ApplicationGui:
         
     def show_streak(self,evnt):
         habit_name=self.habit_list_drop_down.get()
-        current_streak=self.analyzer.get_streak(name=habit_name)
-        self.result_label.configure(text=f"Current streak of {habit_name} : {current_streak}")
-        self.result_label.pack()
-        
+        try:
+            current_streak=self.analyzer.get_streak(name=habit_name)
+            self.result_label.configure(text=f"Current streak of {habit_name} : {current_streak}",foreground="green")
+            self.result_label.pack(pady=50)
+        except ValueError:
+            self.result_label.configure(text=f"Select a valid Habit!",font=("Times New Roman",18,"bold"),foreground="red")
+            self.result_label.pack(pady=50)
+            
     def show_longest_streak(self,evnt):
         habit_name=self.habit_list_drop_down.get()
-        longest_streak=self.analyzer.get_longest_streak(name=habit_name)
-        self.result_label.configure(text=f"Longest streak of {habit_name} : {longest_streak}")
-        self.result_label.pack()
-
-
+        try:
+            longest_streak=self.analyzer.get_longest_streak(name=habit_name)
+            self.result_label.configure(text=f"Longest streak of {habit_name} : {longest_streak}",foreground="green")
+            self.result_label.pack(pady=50)
+        except ValueError as e:
+            self.result_label.configure(text=f"Select a valid Habit.",foreground="red")
+            self.result_label.pack(pady=50)
     def show_currently_tracked_habits(self):
         currently_tracked_habits=self.analyzer.get_currently_tracked_habits()
         self.habits_list.delete(0,tk.END)

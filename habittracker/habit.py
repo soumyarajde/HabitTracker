@@ -53,7 +53,10 @@ class Habit:
         """Add the check off date of a habit to the completed_dates list.
         Arg:date(date).
         """
-        self.completed_dates.append(date)
+        if self.active:
+            self.completed_dates.append(date)
+        else:
+            raise ValueError("Inactive Habit !")
 
     def deactivate_habit(self):
         """Deactivate a habit by changing the value of self.active to False."""
@@ -69,7 +72,6 @@ class Habit:
 
 
        
-#if __name__=="__main__":
 
     
     
