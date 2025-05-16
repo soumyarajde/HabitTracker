@@ -8,24 +8,28 @@ from habittracker.weeklyhabit import WeeklyHabit
 class HabitAnalyzer:
     def __init__(self,file_path='db.json'):
         self.database=JsonDatabase(str(file_path))
-        self.habits=self.database.retrieve_data()
+        
 
     def get_streak(self,name,date=date.today()):
+        self.habits=self.database.retrieve_data()
         if name.lower() in self.habits:
             return self.habits[name.lower()].calculate_streak(date)
         else:
             raise ValueError("Habit does not exist.")
         
     def get_currently_tracked_habits(self):
+        self.habits=self.database.retrieve_data()
         return list(map(lambda habit:habit[0],filter(lambda habit:habit[1].active,self.habits.items())))
          
     def get_habits_with_same_period(self):
+        self.habits=self.database.retrieve_data()
         return {
             'Daily Habits':list(map(lambda habit:habit[0],filter(lambda habit:isinstance(habit[1],DailyHabit),self.habits.items()))),
            'Weekly Habits':list(map(lambda habit:habit[0],filter(lambda habit:isinstance(habit[1],WeeklyHabit),self.habits.items()))),
         }
     
     def get_longest_streak(self,name):
+        self.habits=self.database.retrieve_data()
         name=name.lower()
         if name in self.habits:
             if not self.habits[name].completed_dates:
@@ -68,9 +72,10 @@ class HabitAnalyzer:
     
     
     def get_longest_streak_all(self):
-            return dict(
-                map(lambda habit:(habit[0],self.get_longest_streak(habit[0])),self.habits.items())
-            )
+        self.habits=self.database.retrieve_data()
+        return dict(
+            map(lambda habit:(habit[0],self.get_longest_streak(habit[0])),self.habits.items())
+        )
 if __name__=='__main__':
   
    ha=HabitAnalyzer()
