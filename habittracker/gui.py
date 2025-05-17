@@ -8,7 +8,7 @@ from habittracker.analyzer import HabitAnalyzer
 class ApplicationGui:
     def __init__(self,gui):
         gui.title("Habit Tracker")
-        gui.geometry("600x500")
+        gui.geometry("400x300")
         self.manager=HabitManager()
         self.analyzer=HabitAnalyzer()
 
@@ -16,19 +16,53 @@ class ApplicationGui:
         #create a notebook (tab manager)
         self.notebook = ttk.Notebook(gui)
         self.notebook.pack(expand=True, fill='both')
+        # Tab 1:Welcome
+        welcome_tab=ttk.Frame(self.notebook)
+        self.notebook.add(welcome_tab,text="Welcome")
+        self.build_welcome_tab(welcome_tab)
 
-        # Tab 1: Habit Manager
+        # Tab 2: Habit Manager
         manager_tab = ttk.Frame(self.notebook)
         self.notebook.add(manager_tab, text="Habit Manager")
         self.build_habit_manager_tab(manager_tab)
 
-        # Tab 2: Analyzer
+        # Tab 3: Analyzer
         analyzer_tab = ttk.Frame(self.notebook)
         self.notebook.add(analyzer_tab, text="Analyzer")
         self.build_analyzer_tab(analyzer_tab)
 
     def on_click(self):
         print("Button was clicked!")
+        
+    def build_welcome_tab(self,tab):
+        # Top label
+        tk.Label(tab, text="Hi, Welcome!", font=("Helvetica", 20, "bold")).pack(pady=50)
+        #create a frame to hold pending habit lists.
+        self.pending_list_frame=tk.Frame(tab)
+        self.pending_list_frame.pack(fill="both", expand=True, padx=20, pady=10)
+        #Pending for today list box(left)
+        self.pending_today = tk.Frame(self.pending_list_frame)
+        self.pending_today.pack(side="left", fill="both", expand=True, padx=(0, 10))
+
+        label_pending_today = tk.Label(self.pending_today, text="Pending Today",font=("Helvetica","12"))
+        label_pending_today.pack(anchor="w")
+        self.listbox_pending_today = tk.Listbox(self.pending_today)
+        pending_habits=self.manager.view_pending_habits_daily()
+        for habit in pending_habits:
+            self.listbox_pending_today.insert(tk.END, habit.upper())
+            self.listbox_pending_today.pack(fill="both", expand=True)
+        #Pending for this week list box(right)
+        self.pending_this_week = tk.Frame(self.pending_list_frame)
+        self.pending_this_week.pack(side="left", fill="both", expand=True, padx=(0, 10))
+
+        label_pending_this_week = tk.Label(self.pending_this_week, text="Pending this week",font=("Helvetica","12"))
+        label_pending_this_week.pack(anchor="w")
+        self.listbox_pending_this_week = tk.Listbox(self.pending_this_week)
+        pending_habits=self.manager.view_pending_habits_weekly()
+        for habit in pending_habits:
+            self.listbox_pending_this_week.insert(tk.END, habit.upper())
+            self.listbox_pending_this_week.pack(fill="both", expand=True)
+
 
     def build_habit_manager_tab(self,tab):
         #create button to show Create New
@@ -78,11 +112,10 @@ class ApplicationGui:
         #input validation
         if not name.strip() or not desc.strip() or not period: 
             messagebox.showerror("Error","Please fill all the fields.")
-
         else:
             try:
-                self.manager.create_habit(name=name,description=desc,periodicity=period)
-                messagebox.showinfo("Success", "Habit created successfully.") # TODO show habit name in the msg, also for others 
+                self.manager.create_habit(name=name,description=desc,periodicity=Periodicity(period))
+                messagebox.showinfo("Success",f"Habit {name} created successfully.") 
             except ValueError as e:
                 messagebox.showerror("Error",e)
         self.create_form_fields.pack_forget()
@@ -148,7 +181,7 @@ class ApplicationGui:
         self.result_label=ttk.Label(tab,text=f"")
         self.result_label.pack_forget()
         #create a list box to disply list of values in the result.This is hidden initially.
-        self.habits_list=tk.Listbox(tab)
+        self.habits_list=tk.Listbox(tab,font = ("Courier New", 12),width=50)
 
 
 
@@ -242,8 +275,12 @@ class ApplicationGui:
     def show_longest_streak_all(self):
         longest_streak=self.analyzer.get_longest_streak_all()
         self.habits_list.delete(0,tk.END)
+        header = f"{'Habit'.ljust(20)}   {'Longest Streak'.rjust(10)}"
+        self.habits_list.insert("end", header)
+        self.habits_list.insert("end", "-" * 50)
         for habit,streak in longest_streak.items():
-            self.habits_list.insert(tk.END,(habit,streak))
+            line = f"{habit.ljust(20)}   {str(streak).rjust(10)}"
+            self.habits_list.insert("end",line)
         self.habits_list.pack()
 
     
