@@ -8,7 +8,7 @@ from habittracker.analyzer import HabitAnalyzer
 class ApplicationGui:
     def __init__(self,gui):
         gui.title("Habit Tracker")
-        gui.geometry("400x300")
+        gui.geometry("600x500")
         self.manager=HabitManager()
         self.analyzer=HabitAnalyzer()
 
@@ -33,10 +33,10 @@ class ApplicationGui:
     def build_habit_manager_tab(self,tab):
         #create button to show Create New
         self.btn_create_habit=ttk.Button(tab,text="Create New",command=self.on_click_btn_create_habit)
-        self.btn_create_habit.pack(pady=10)
+        self.btn_create_habit.pack(pady=30)
         #create view button
         self.btn_view_habit=ttk.Button(tab,text="View",command=self.on_click_btn_view_habit)
-        self.btn_view_habit.pack(pady=10)
+        self.btn_view_habit.pack()
         self.habit_list_container=ttk.Frame(tab)
         self.create_form_fields=ttk.Frame(tab)
 
@@ -67,8 +67,6 @@ class ApplicationGui:
         self.btn_create=ttk.Button(self.create_form_fields,text="Create",command=self.create_habit)
         self.btn_create.grid(row=3,columnspan=2,pady=10)
     
-    # def show_success_msg_popup(self,msg):
-    #     messagebox.showinfo("Greetings!","Habit created successfully.")
     
     def create_habit_error_msg(self):
         messagebox.showerror("Error","Please fill all the fields.")
@@ -78,12 +76,15 @@ class ApplicationGui:
         desc=self.desc_entry.get()
         period=self.period_drop_down.get()
         #input validation
-        if not name or not desc or not period:
+        if not name.strip() or not desc.strip() or not period: 
             messagebox.showerror("Error","Please fill all the fields.")
 
         else:
-            self.manager.create_habit(name=name,description=desc,periodicity=period)
-            messagebox.showinfo("Success", "Habit created successfully.")
+            try:
+                self.manager.create_habit(name=name,description=desc,periodicity=period)
+                messagebox.showinfo("Success", "Habit created successfully.") # TODO show habit name in the msg, also for others 
+            except ValueError as e:
+                messagebox.showerror("Error",e)
         self.create_form_fields.pack_forget()
 
     def on_click_btn_view_habit(self):
@@ -244,17 +245,6 @@ class ApplicationGui:
         for habit,streak in longest_streak.items():
             self.habits_list.insert(tk.END,(habit,streak))
         self.habits_list.pack()
-
-    
-
-        
-
-
-    
-
-        
-
-        
 
     
 

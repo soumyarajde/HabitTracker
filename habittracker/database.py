@@ -4,15 +4,20 @@ from habittracker.dailyhabit import DailyHabit
 from habittracker.weeklyhabit import WeeklyHabit
 
 class HabitDataStorage:
-    """Manages habit data saving and loading.
-    Attribute:filename(string) name of the file to which data is to be saved."""
-    def __init__(self,filename):
-        """Initializes a new instance of HabitDataStorage.
-        Arg:filename(string)"""
+    """
+    Manages habit data saving and loading.
+    Attribute:
+        filepath(string) path of the file to which data is to be saved.
+    """
+    def __init__(self,filepath):
+        """
+        Initializes a new instance of HabitDataStorage.
+        Arg:
+            filepath(string):path of database."""
         
-        self.filename=filename
+        self.filename=filepath
 
-    def save_data(self):
+    def save_data(self): #TODO Improve comments 
         raise NotImplementedError
 
     def retrieve_data(self):
@@ -25,7 +30,11 @@ class JsonDatabase(HabitDataStorage):
         super().__init__(filename)
 
     def save_data(self,habits):
-        """Save habit data to the json file."""
+        """
+        Save habit data to the json file.
+        Args:
+            habits(dictionary):dictionary of habit class objects.
+        """
         _data={}
         for habit_name,habit in habits.items():
             _data.update({habit_name:habit.serialize()})

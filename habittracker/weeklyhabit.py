@@ -9,18 +9,28 @@ class WeeklyHabit(Habit):
 
     
     def calculate_streak(self,date=date.today()):
-        """Calculate and return current streak of a weekly habit.If no check off for current week return streak of previous week."""
-       
+        """
+        Calculate and return current streak of a weekly habit.If no check off for current week return streak upto previous week.
+        Args:
+            date(date):date on which streak has to be calculated.
+        Returns:
+            streak(integer):streak of a habit.
+        """
+        # if completed dates is empty streak is zero
         if not self.completed_dates:
             return 0
         strek=0
         today=date
+        # eliminate duplicate entries by converting into set
         completed_dates=set(self.completed_dates)
         #starts checking from the current week and go backward.
         #week starts on monday
-        current_week_start=today-timedelta(days=today.weekday())
+        current_week_start=today-timedelta(days=today.weekday())#today.weekday() is 0 for monday,1 for tuesday and so on
         current_week_end=current_week_start+timedelta(days=6)
+        #check whether habit is done or not in the current week.
+        # That is any date between start and end dates of current week is in the completed dates  list.
         current_week_flag=any(current_week_start<=d<=current_week_end for d in completed_dates)
+        #if habit not done during current week calculate streak upto previous week.
         if not current_week_flag:
             current_week_start-=timedelta(days=7)
             current_week_end-=timedelta(days=7)
@@ -35,23 +45,7 @@ class WeeklyHabit(Habit):
 
     
     
-if __name__=='__main__':
-    weekly_habit=WeeklyHabit("Shopping","for the week")
-    
-    weekly_habit.check_off(date(2025,4,8))
-    weekly_habit.check_off(date(2025,4,15))
-    weekly_habit.check_off(date(2025,4,18))
-    weekly_habit.check_off(date(2025,4,23))
-    weekly_habit.check_off(date(2025,4,30))
-    ser = weekly_habit.serialize()
-    d = DailyHabit.deserialize(ser)
-    w = WeeklyHabit.deserialize(ser)
-    print(d)
-    print(w)
-    #weekly_habit.check_off()
-    # result=weekly_habit.calculate_current_streak()
-    # print(f"streak= {result}")
-    
+
     
     
         
