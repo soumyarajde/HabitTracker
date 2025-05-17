@@ -1,10 +1,6 @@
 import pytest
-from datetime import timedelta,date
+from datetime import date
 from functools import reduce
-from habittracker.database import HabitDataStorage,JsonDatabase
-from habittracker.habit import Habit
-from habittracker.dailyhabit import DailyHabit
-from habittracker.weeklyhabit import WeeklyHabit
 from habittracker.analyzer import HabitAnalyzer
 
 @pytest.fixture

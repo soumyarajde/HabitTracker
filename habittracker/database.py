@@ -1,5 +1,4 @@
 import json
-from habittracker.habit import Habit
 from habittracker.dailyhabit import DailyHabit
 from habittracker.weeklyhabit import WeeklyHabit
 

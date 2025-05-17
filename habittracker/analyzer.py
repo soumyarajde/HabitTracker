@@ -1,7 +1,6 @@
 from datetime import date,timedelta
 from functools import reduce
-from habittracker.database import HabitDataStorage,JsonDatabase
-from habittracker.habit import Habit
+from habittracker.database import JsonDatabase
 from habittracker.dailyhabit import DailyHabit
 from habittracker.weeklyhabit import WeeklyHabit
 
