@@ -2,7 +2,7 @@ from datetime import datetime,date,time,timedelta
 
 class Habit:
     """
-    Represents a habit.
+    Represents super class of all habit classes.
     Attributes:
         name(string):The name of the habit.
         description(string):A short desription about the habit.
@@ -82,7 +82,7 @@ class Habit:
         self.active=True
 
     def calculate_streak(self):
-        """Calculates streak of a habit."""
+        """Method to calculate streak."""
         raise NotImplementedError
 
 

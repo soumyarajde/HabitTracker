@@ -9,7 +9,7 @@ class DailyHabit(Habit):
 
     def calculate_streak(self,date=date.today()):
         """
-        Calculate current streak for a given habit.If today is not in the completed dates then return the streak of yesterday.
+        Method to calculate streak for a given habit.If today is not in the completed dates then return the streak upto previous day.
         Args:
             date:(date) date on which streak has to be calculated.
         Returns:

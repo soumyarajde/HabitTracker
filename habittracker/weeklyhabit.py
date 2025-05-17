@@ -10,7 +10,7 @@ class WeeklyHabit(Habit):
     
     def calculate_streak(self,date=date.today()):
         """
-        Calculate and return current streak of a weekly habit.If no check off for current week return streak upto previous week.
+        Method to calculate  current streak of a weekly habit.If no check off for current week return streak upto previous week.
         Args:
             date(date):date on which streak has to be calculated.
         Returns:

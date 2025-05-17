@@ -5,22 +5,24 @@ from habittracker.weeklyhabit import WeeklyHabit
 
 class HabitDataStorage:
     """
-    Manages habit data saving and loading.
+    Super class of all file based storage classes.
     Attribute:
-        filepath(string) path of the file to which data is to be saved.
+        filename(string) name of the file to which data is to be saved.
     """
-    def __init__(self,filepath):
+    def __init__(self,filename):
         """
         Initializes a new instance of HabitDataStorage.
         Arg:
-            filepath(string):path of database."""
+            filename(string):name of database."""
         
-        self.filename=filepath
+        self.filename=filename
 
-    def save_data(self): #TODO Improve comments 
+    def save_data(self):
+        """Method to save data to the database."""
         raise NotImplementedError
 
     def retrieve_data(self):
+        """Method to retrieve data from the database."""
         raise NotImplementedError
 
 class JsonDatabase(HabitDataStorage):
@@ -46,11 +48,16 @@ class JsonDatabase(HabitDataStorage):
 
     
     def retrieve_data(self):
-        """Reload the data stored in json file"""
+        """
+        Reload the data stored in a json file.
+        Returns:
+            dictionary:dictionary of Habit class objects.
+        """
         habits={}
         try:
             with open(self.filename) as f:
                 data=json.load(f)
+         # return null set when the file is empty or does not exist.       
         except json.decoder.JSONDecodeError as e:
             print(f"Error loading jason {e}")
             return {}
