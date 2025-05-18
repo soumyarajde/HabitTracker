@@ -25,6 +25,13 @@ def test_deactivate_activate_habit(test_habit):
     test_habit.activate_habit()
     assert test_habit
 
+def test_check_off_deactivated_habit(test_habit):
+    #first deactivate a habit and then try to check off it.
+    test_habit.deactivate_habit()
+    with pytest.raises(ValueError) as exc_info:
+        test_habit.check_off()
+    assert str(exc_info.value)=="Inactive Habit!"
+
 def test_serialize_deserialize(test_habit):
     #add a completion date
     today=date.today()
