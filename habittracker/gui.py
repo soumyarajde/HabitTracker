@@ -16,6 +16,7 @@ class ApplicationGui:
         #create a notebook (tab manager)
         self.notebook = ttk.Notebook(gui)
         self.notebook.pack(expand=True, fill='both')
+        
         # Tab 1:Welcome
         welcome_tab=ttk.Frame(self.notebook)
         self.notebook.add(welcome_tab,text="Welcome")
@@ -31,8 +32,8 @@ class ApplicationGui:
         self.notebook.add(analyzer_tab, text="Analyzer")
         self.build_analyzer_tab(analyzer_tab)
 
-    def on_click(self):
-        print("Button was clicked!")
+    # def on_click(self):
+    #     print("Button was clicked!")
         
     def build_welcome_tab(self,tab):
         # Top label
@@ -182,8 +183,10 @@ class ApplicationGui:
         self.result_label.pack_forget()
         #create a list box to disply list of values in the result.This is hidden initially.
         self.habits_list=tk.Listbox(tab,font = ("Courier New", 12),width=50)
-
-
+        # #create a tree view with two columns
+        # cols = ("habit", "longest streak")
+        # self.tree = ttk.Treeview(tab, columns=cols, show="headings")
+        # self.tree.pack(fill="both", expand=True, padx=10, pady=10)
 
     def on_select_analysis(self,evnt):
         selection=self.analysis_drop_down.get()
@@ -191,7 +194,7 @@ class ApplicationGui:
         habits=[name.upper()for name,habit in self.manager.habits.items()]
         habit_drop_down_options=['Select a habit']+habits
         width_drop_down=max(len(option)for option in habit_drop_down_options)
-                                                         
+                                                        
         if selected_analysis==AnalyzerOptions.CURRENT_STREAK:
             self.habits_list.pack_forget()
             self.result_label.pack_forget()
@@ -228,8 +231,8 @@ class ApplicationGui:
             self.result_label.pack_forget()
             self.habits_list.pack_forget()
 
-    
-    
+        
+        
 
         
     def show_streak(self,evnt):
@@ -251,6 +254,7 @@ class ApplicationGui:
         except ValueError as e:
             self.result_label.configure(text=f"Select a valid Habit.",foreground="red")
             self.result_label.pack(pady=50)
+
     def show_currently_tracked_habits(self):
         currently_tracked_habits=self.analyzer.get_currently_tracked_habits()
         self.habits_list.delete(0,tk.END)

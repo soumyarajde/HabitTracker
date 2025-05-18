@@ -9,5 +9,5 @@ class AnalyzerOptions(str,Enum):
     LONGEST_STREAK="Show longest streak"
     DAILY_HABITS="Show daily habits"
     WEEKLY_HABITS="Show weekly habits"
-    LONGEST_STREAK_ALL="Show longest streak All"
+    LONGEST_STREAK_ALL="Show longest streak (All habits)"
     CURRENTLY_TRACKED_HABITS="Show currently tracked habits"
