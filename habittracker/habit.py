@@ -71,7 +71,7 @@ class Habit:
         if self.active:
             self.completed_dates.append(date)
         else:
-            raise ValueError("Inactive Habit !")
+            raise ValueError("Inactive Habit!")
 
     def deactivate_habit(self):
         """Deactivate a habit by changing the value of self.active to False."""

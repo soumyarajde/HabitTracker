@@ -32,10 +32,14 @@ class WeeklyHabit(Habit):
         current_week_flag=any(current_week_start<=d<=current_week_end for d in completed_dates)
         #if habit not done during current week calculate streak upto previous week.
         if not current_week_flag:
+        #current week is now previous week.week start date is 7days before current week start.
+        # week end is 7 days before current week end.   
             current_week_start-=timedelta(days=7)
             current_week_end-=timedelta(days=7)
+        #check for date between current week start and week end in the completed dates list.
         while True:
             if any(current_week_start<=d<=current_week_end for d in completed_dates):
+                #if at least one date in the current week is in list incarese streak by 1.
                 strek+=1
                 current_week_start-=timedelta(days=7)
                 current_week_end-=timedelta(days=7)
