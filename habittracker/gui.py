@@ -56,7 +56,7 @@ class ApplicationGui:
         self.pending_this_week = tk.Frame(self.pending_list_frame)
         self.pending_this_week.pack(side="left", fill="both", expand=True, padx=(0, 10))
 
-        label_pending_this_week = tk.Label(self.pending_this_week, text="Pending this week",font=("Helvetica","12"))
+        label_pending_this_week = tk.Label(self.pending_this_week, text="Pending This Week",font=("Helvetica","12"))
         label_pending_this_week.pack(anchor="w")
         self.listbox_pending_this_week = tk.Listbox(self.pending_this_week)
         pending_habits=self.manager.view_pending_habits_weekly()
@@ -289,7 +289,3 @@ class ApplicationGui:
 
     
 
-if __name__=='__main__':
-    gui=tk.Tk()
-    app=ApplicationGui(gui)
-    gui.mainloop()
