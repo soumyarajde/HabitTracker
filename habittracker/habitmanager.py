@@ -146,12 +146,7 @@ class HabitManager:
 
 if __name__=='__main__':
     hm=HabitManager()
-    # result=hm.view_pending_habits_daily()
-    # print(result)
-    # result=hm.view_pending_habits_weekly()
-    # print(result)
-    hm.create_habit(name=" ",description="morning walk",periodicity="daily")
-
+    
    
    
     

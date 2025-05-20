@@ -34,14 +34,11 @@ def test_calculate_streak_multiple_checkoff_same_week(weekly_habit):
     # multiple check off in a single week
     day=date(2025,5,9)#friday
     weekly_habit.completed_dates=[day,day-timedelta(days=2)]
-    assert weekly_habit.calculate_streak()==1
+    assert weekly_habit.calculate_streak(date=date(2025,5,9))==1
 
 def test_calculate_streak_unsorted_checkoff_dates(weekly_habit):
     today=date.today()
     weekly_habit.completed_dates=[today,today-timedelta(days=14),today-timedelta(days=7)]
     assert weekly_habit.calculate_streak()==3
 
-    
-if __name__=='__main__':
-    pytest.main()
-                         
+     

@@ -101,4 +101,3 @@ def test_view_pending_habits_weekly(habit_manager):
     assert habit_manager.view_pending_habits_weekly()==["workout"]
 
     
-#test database integration

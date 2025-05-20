@@ -9,17 +9,17 @@ def test_analyzer():
     return analyzer
 
 def test_get_currently_tracked_habit(test_analyzer):
-    assert test_analyzer.get_currently_tracked_habits()==['sleeping','reading','shopping','exercise','cleaning']
+    assert test_analyzer.get_currently_tracked_habits()==['exercise','sleeping','drinking','cleaning','shopping']
 
 def test_get_habits_with_same_period(test_analyzer):
-    assert test_analyzer.get_habits_with_same_period()=={'Daily Habits':['sleeping','reading','exercise'],'Weekly Habits':['shopping','cleaning']}
+    assert test_analyzer.get_habits_with_same_period()=={'Daily Habits':['exercise','sleeping','drinking',],'Weekly Habits':['cleaning','shopping']}
 
 def test_get_longest_streak(test_analyzer):
-    assert test_analyzer.get_longest_streak('sleeping')==7
-    assert test_analyzer.get_longest_streak('cleaning')==2
+    assert test_analyzer.get_longest_streak('exercise')==15
+    assert test_analyzer.get_longest_streak('sleeping')==10
 
 def test_get_longest_streak_all(test_analyzer):
-    assert test_analyzer.get_longest_streak_all()=={'sleeping':7,'reading':5,'shopping':2,'exercise':4,'cleaning':2}
+    assert test_analyzer.get_longest_streak_all()=={'sleeping':10,'drinking':10,'shopping':4,'exercise':15,'cleaning':2}
 
 def test_longest_streak_non_existent_habit(test_analyzer):
     with pytest.raises (ValueError) as exc_info:
@@ -27,7 +27,7 @@ def test_longest_streak_non_existent_habit(test_analyzer):
     assert str(exc_info.value)=="Habit does not exist."
 
 def test_get_streak(test_analyzer):
-    assert test_analyzer.get_streak("sleeping",date=date(2025,5,7))==7
-    assert test_analyzer.get_streak("reading",date=date(2025,5,7))==1
-    assert test_analyzer.get_streak("sleeping",date=date(2025,5,5))==5
-    assert test_analyzer.get_streak("shopping",date=date(2025,5,7))==2
+    assert test_analyzer.get_streak("sleeping",date=date(2025,5,20))==3
+    assert test_analyzer.get_streak("drinking",date=date(2025,5,20))==4
+    assert test_analyzer.get_streak("sleeping",date=date(2025,5,15))==5
+    assert test_analyzer.get_streak("shopping",date=date(2025,5,19))==4

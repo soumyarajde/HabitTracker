@@ -51,5 +51,3 @@ def test_retrieve_data_filenotfound(tmp_path):
     assert habits=={}# return null set on failure
 
 
-if __name__=='__main__':
-    pytest.main()
