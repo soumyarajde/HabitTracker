@@ -33,8 +33,35 @@ To install the 'habittracker' library and the App use the following pip command:
    pip install .
  
   ```
+Note:Make sure you have python 3.13 installed on your system.
 
 ## Usage
+
+1.Run the main script
+   ```bash
+   python main.py
+
+   ```
+## Testing
+
+The Application comes with a suite of tests.To run them,
+Run the script
+   ```bash
+   pytest tests
+
+   ```
+Ensure all tests pass to verify the functionality of app on your system.
+
+## Contributing
+
+Contributions are welcome!
+If you find any issues or have feature requests,please open an issue on our GitHub repository or open a pull request.
+
+## License
+
+## Contact
+
+
 
 
 
