@@ -283,7 +283,7 @@ class ApplicationGui:
         self.habits_list.insert("end", header)
         self.habits_list.insert("end", "-" * 50)
         for habit,streak in longest_streak.items():
-            line = f"{habit.ljust(20)}   {str(streak).rjust(10)}"
+            line = f"{habit.upper().ljust(20)}   {str(streak).rjust(10)}"
             self.habits_list.insert("end",line)
         self.habits_list.pack()
 
