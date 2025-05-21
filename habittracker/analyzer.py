@@ -24,7 +24,9 @@ class HabitAnalyzer:
         Returns:
             streak(integer):streak of a habit.
         """
+        # load the habits data into self.habits
         self.habits=self.database.retrieve_data()
+        #if the key of the habit for which streak is to be calculated is in the habits list call the calculate streak function.
         if name.lower() in self.habits:
             return self.habits[name.lower()].calculate_streak(date)
         else:
@@ -135,7 +137,4 @@ class HabitAnalyzer:
 if __name__=='__main__':
   
    ha=HabitAnalyzer()
-   #streak=ha.get_streak("sleeping",date=date(2025,5,7))
-   #print(streak)
-   print(ha.get_habits_with_same_period())
-   #print(ha.get_longest_streak_all())
+  

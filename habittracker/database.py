@@ -37,8 +37,11 @@ class JsonDatabase(HabitDataStorage):
             habits(dictionary):dictionary of habit class objects.
         """
         _data={}
+        # access each habit in habits dictionary at a time habit_name(key) habit(value)
         for habit_name,habit in habits.items():
+        # serialize each habit and add it to a dictionary.Here key is habit name in lowercase and value serialized habit object
             _data.update({habit_name:habit.serialize()})
+        # save data into database file
         try:
             with open(self.filename,"w") as f:
                 json.dump(_data,f)
@@ -53,6 +56,7 @@ class JsonDatabase(HabitDataStorage):
             dictionary:dictionary of Habit class objects.
         """
         habits={}
+        #load the data in json file and assign to a variable 'data'.It is a dictionary.
         try:
             with open(self.filename) as f:
                 data=json.load(f)
@@ -63,12 +67,15 @@ class JsonDatabase(HabitDataStorage):
         except FileNotFoundError as e:
             print(f"Error loading jason {e}")
             return {} 
+        # consider each item in the data dict.Convert it back to habit object by deserialization.
         for habit_name,habit in data.items():
+            # if the class name of the item belongs to 'DailyHabit' call deserialization for that class.
             if habit['class_name']=='DailyHabit':
                 habits[habit_name]=DailyHabit.deserialize(habit)
+            # if the class name of the item belongs to 'WeeklyHabit' call deserialization for WeeklyHabit.
             elif habit['class_name']=='WeeklyHabit':
                 habits[habit_name]=WeeklyHabit.deserialize(habit)
-
+        # return the dict. of reconstructed habit objects
         return habits
         
         

@@ -1,15 +1,17 @@
 # Habittracker App
 
-A python app to work create and manage habits. It creates daily and weekly habit objects and manages it.Managing include check-offf,deactivation,activation and deletion.It also allows to analyze the habits.
+A python app to work create and manage habits. It creates daily and weekly habit objects and manages it.  Managing include check-off,deactivation,activation and deletion.It also allows to analyze the habits.
 
 ## Table of Contents
 
 - [Features](#features)
 - [Installation](#installation)
 - [Usage](#usage)
-- [Configuration](#configuration)
-- [Examples](#examples)
+
 - [Testing](#testing)
+- [Contributing](#contributing)
+- [License](#license)
+- [Contact](#contact)
 
 ## Features
 
@@ -42,6 +44,35 @@ Note:Make sure you have python 3.13 installed on your system.
    python main.py
 
    ```
+Application window with multiple tabs opens when user runs the main.py file
+
+### Welcome Tab
+Welcome tab reminds the user about pending habits.
+
+![Welcome tab](./screenshots/welcome_tab.png)
+### Habit Manager Tab
+Habit Manager tab allows creating habits and
+managing habits.
+
+![Habit Manager tab](./screenshots/habitmanager_tab.png)
+
+#### Creating a Habit
+On clicking create new input fields for Name, Description, and Periodicity will appear.Enter all fields and click create button to create a habit and update the database.
+
+![Create New Habit](./screenshots/create_new_habit.png)
+
+#### Habit Management
+Clicking on View shows the habit management options.Click on the button to perform the required fucntion.
+
+![Habit Management](./screenshots/view_habit.png)
+
+### Analyzer Tab
+By clicking on the Analyzer tab,you can get various information about the habit such as current streak,longest streak,etc.This tab shows a drop-down which lists various analysis options.You have to select one.When user select option for streak it shows another drop-down with habit names.User have to select the habit from the list for which analysis is to be done.
+
+![Analyzer Tab](./screenshots/analyzer_tab.png)
+![Analyzer Tab showing drop-down with habit names](./screenshots/habit_drop_down.png)
+
+
 ## Testing
 
 The Application comes with a suite of tests.To run them,
