@@ -75,14 +75,7 @@ class JsonDatabase(HabitDataStorage):
             # if the class name of the item belongs to 'WeeklyHabit' call deserialization for WeeklyHabit.
             elif habit['class_name']=='WeeklyHabit':
                 habits[habit_name]=WeeklyHabit.deserialize(habit)
-        # return the dict. of reconstructed habit objects
+        # return the dictionary of reconstructed habit objects
         return habits
         
         
-
-        
-    
-
-if __name__ == "__main__":
-    db = JsonDatabase("tf.json")
-    db.retrieve_data()

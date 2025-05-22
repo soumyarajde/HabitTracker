@@ -7,14 +7,14 @@ from habittracker.constants import Periodicity
 class HabitManager:
     """Manages all habits.
     Attributes:habits{Habit}:a dictionary of Habit class objects.
-                databse:HabitDataStorage:an instance of HabitDataStorage used for databse operations."""
-    def __init__(self,filepath='db.json'):
+                database:HabitDataStorage:an instance of HabitDataStorage used for databse operations."""
+    def __init__(self,filename='db.json'):
         """Initialize HabitManager object.
         Args:
-            filepath(string):database filepath.
+            filename(string):file name of database.
             """
         self.habits={}
-        self.database=JsonDatabase(str(filepath))
+        self.database=JsonDatabase(str(filename))
         self.habits=self.database.retrieve_data()
 
     def create_habit(self,name=None,description=None,periodicity=None):
@@ -28,22 +28,29 @@ class HabitManager:
         Raises:
             ValueError("Unknown periodicity."):If periodicity is not daily or weekly
             ValueError("Habit already exists"):If tries to create an existing habit."""
+        # Check for name is None
         if name==None:
             raise ValueError("Invalid Habit!")
+        # Check for empty name
         elif name.strip()=="":
             raise ValueError("Invalid Habit!")
+        # check for habit existing or not
         elif not name.lower() in self.habits:
+            # check for periodicty daily and create the correct object
             if periodicity==Periodicity.DAILY:
                 temp_habit=DailyHabit(name,description)
                 self.habits.update({name.lower():temp_habit})
+                #check for periodicty weekly and create the correct object
             elif periodicity==Periodicity.WEEKLY:
                 temp_habit=WeeklyHabit(name,description)
                 self.habits.update({name.lower():temp_habit})
+            # if periodicity is other than daily or weekly raise error.
             else:
                 raise ValueError("Unknown periodicity.")
+        #if habit name is already there raise error
         else:   
             raise ValueError("Habit already exists")
-            
+        # update database   
         self.database.save_data(self.habits)
 
     def delete_habit(self,name=None):
@@ -54,10 +61,13 @@ class HabitManager:
         Raises:
             ValueError("Habit does not exist."):If tries to delete a habit which is not in the database.
         """
+        # check for habit is existing and if true remove it from form the habits dict.
         if name.lower()in self.habits:
             self.habits.pop(name.lower())
         else:
+        # habit not existing raise error
             raise ValueError("Habit does not exist.")
+        # update database
         self.database.save_data(self.habits)
 
     def deactivate_habit(self,name=None):
@@ -68,10 +78,13 @@ class HabitManager:
         Raises:
             ValueError("Habit does not exist."):If tries to deactivate a habit which is not in the database.
         """
+        # check for habit existence and if true deactivate it
         if name.lower() in self.habits:
             self.habits[name.lower()].deactivate_habit()
         else:
+        # otherwise raise error
             raise ValueError("Habit does not exist.")
+        # update database
         self.database.save_data(self.habits)
 
     def activate_habit(self,name=None):
@@ -82,11 +95,13 @@ class HabitManager:
         Raises:
             ValueError("Habit does not exist."):If tries to activate a habit which is not in the database.
         """
+        # check for habit existence and if true activate it
         if name.lower() in self.habits:
             self.habits[name.lower()].activate_habit()
+        # otherwise raise error
         else:
             raise ValueError("Habit does not exist.")
-
+        # update database
         self.database.save_data(self.habits)
 
     def check_off(self,name=None,date=date.today()):
@@ -97,10 +112,13 @@ class HabitManager:
         Raises:
             ValueError("Habit does not exist."):If tries to check off a habit which is not in the database.
         """
+        # check for habit existence and if true call check_off()
         if name.lower() in self.habits:
             self.habits[name.lower()].check_off(date)
+        # otherwise raise error
         else:
             raise ValueError("Habit does not exist.")
+        # update databse
         self.database.save_data(self.habits)
 
     def view_pending_habits_daily(self,date=date.today()):
@@ -137,16 +155,6 @@ class HabitManager:
         return pending_habits_weekly
 
 
-
-
-
-
-
-
-
-if __name__=='__main__':
-    hm=HabitManager()
-    
    
    
     
