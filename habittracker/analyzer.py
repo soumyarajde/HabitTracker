@@ -46,10 +46,11 @@ class HabitAnalyzer:
         # load database
         habits=self.database.retrieve_data()
         #filter only those (name,Habit object)pairs where Habit object is active
-        #Each item is a tuple (name,Habit object)
+        active_habits=filter(lambda habit:habit[1].active,habits.items())
         # from each tuple pick only the name(key)
+        habit_names=map(lambda habit:habit[0],active_habits)
         # convert map object into a list and return
-        return list(map(lambda habit:habit[0],filter(lambda habit:habit[1].active,habits.items())))
+        return list(habit_names)
          
     def get_habits_with_same_period(self):
         """Method to filter habits with same periodicity.
@@ -57,20 +58,18 @@ class HabitAnalyzer:
             dict:dictionary of Daily Habits and Weekly Habits.
             {"Daily Habits":[DailyHabit objects],"Weekly Habits":[WeeklyHabit objects]}
         """
-        # load database
         habits=self.database.retrieve_data()
         # filter those (name, Habit) pairs where Habit is a DailyHabit object
+        daily_habits=filter(lambda habit:isinstance(habit[1],DailyHabit),habits.items())
         # from each tuple pull out only name(key)
-        #convert the map object into a list.
-        # use 'Daily Habits' as key and list as value
-        #repeat the same for 'Weekly Habit'
-        # return a dictionary with two key-value pairs 'Daily Habits' and 'Weekly Habits'
-
-
-        return {
-            'Daily Habits':list(map(lambda habit:habit[0],filter(lambda habit:isinstance(habit[1],DailyHabit),habits.items()))),
-           'Weekly Habits':list(map(lambda habit:habit[0],filter(lambda habit:isinstance(habit[1],WeeklyHabit),habits.items()))),
-        }
+        daily_habits_names_only=map(lambda habit:habit[0],daily_habits)
+        # filter those (name, Habit) pairs where Habit is a WeeklyHabit object
+        weekly_habits=filter(lambda habit:isinstance(habit[1],WeeklyHabit),habits.items())
+         # from each tuple pull out only name(key)
+        weekly_habits_names_only=map(lambda habit:habit[0],weekly_habits)
+        # convert the map objects into a list .
+        #return dictionary with keys 'Daily habits' and 'Weekly Habits' and values converted list
+        return {'Daily Habits':list(daily_habits_names_only),'Weekly Habits':list(weekly_habits_names_only)}
     
     def get_longest_streak(self,name):
         """Method to calculate longest streak of a given habit.
@@ -82,6 +81,7 @@ class HabitAnalyzer:
             integer:longest streak
         """
         habits=self.database.retrieve_data()
+        # convert bname into lowercase which is the used as key in the habit database
         name=name.lower()
         if name in habits:
         # streak is zero when completed_dates is empty.
@@ -91,6 +91,7 @@ class HabitAnalyzer:
             elif isinstance(habits[name],DailyHabit):
         #eliminate duplicate entries and sort dates in ascending order        
                 dates=list(sorted(set(habits[name].completed_dates)))
+
         #define reducer function which is to be passed to reduce tool.
                 def reducer(acc,i):
                     """Update streak counter for consecutive dates.
@@ -151,9 +152,16 @@ class HabitAnalyzer:
         # load database
         habits=self.database.retrieve_data()
         return dict(
-            map(lambda habit:(habit[0],self.get_longest_streak(habit[0])),habits.items())
+            map(
+                # map for each entry in habits.items which is a tuple (name,habit object)
+                lambda habit:
+                (habit[0],# habit[0] is habit name in lower
+                 self.get_longest_streak(habit[0])),#call method to calculate longest streak
+                 habits.items()# iterate over entire habits
+                 )
         )
 if __name__=='__main__':
   
    ha=HabitAnalyzer()
+   print(ha.get_longest_streak_all())
   

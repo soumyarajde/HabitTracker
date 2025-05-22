@@ -62,10 +62,10 @@ class JsonDatabase(HabitDataStorage):
                 data=json.load(f)
          # return null set when the file is empty or does not exist.       
         except json.decoder.JSONDecodeError as e:
-            print(f"Error loading jason {e}")
+            print(f"Error loading json {e}")
             return {}
         except FileNotFoundError as e:
-            print(f"Error loading jason {e}")
+            print(f"Error loading json {e}")
             return {} 
         # consider each item in the data dict.Convert it back to habit object by deserialization.
         for habit_name,habit in data.items():
