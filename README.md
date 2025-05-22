@@ -79,10 +79,6 @@ By clicking on the Analyzer tab,you can get various information about the habit 
 ![Analyzer Tab showing drop-down with habit names](./screenshots/habit_drop_down.png)
 
 ## Examples
-``` python
-from habittracker.habitmanager import HabitManager
-hm=HabitManager()
-hm.create
 
 
 ## Testing
