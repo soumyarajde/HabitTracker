@@ -7,7 +7,6 @@ A python app to work create and manage habits. It creates daily and weekly habit
 - [Features](#features)
 - [Installation](#installation)
 - [Usage](#usage)
-
 - [Testing](#testing)
 - [Contributing](#contributing)
 - [License](#license)
@@ -19,6 +18,7 @@ A python app to work create and manage habits. It creates daily and weekly habit
 - check-off habit,deactivate/activate and delete habit.
 - HabitAnalyzer to perform analysis.
 - Json database for storing and retrieving data
+- Documnented and easy to follow code
 
 
 ## Installation
@@ -35,6 +35,12 @@ To install the 'habittracker' library and the App use the following pip command:
    pip install .
  
   ```
+**Create and activate a virtual enivironment**
+```bash
+python3 -m venv venv
+source venv/bin/activate
+ ```
+
 Note:Make sure you have python 3.13 installed on your system.
 
 ## Usage
@@ -72,6 +78,12 @@ By clicking on the Analyzer tab,you can get various information about the habit 
 ![Analyzer Tab](./screenshots/analyzer_tab.png)
 ![Analyzer Tab showing drop-down with habit names](./screenshots/habit_drop_down.png)
 
+## Examples
+``` python
+from habittracker.habitmanager import HabitManager
+hm=HabitManager()
+hm.create
+
 
 ## Testing
 
@@ -90,7 +102,13 @@ If you find any issues or have feature requests,please open an issue on our GitH
 
 ## License
 
+Distributed under the MIT License.
+
 ## Contact
+
+Soumya Raj - soumya.raj.de@gmail.com
+
+Project Link:
 
 
 
