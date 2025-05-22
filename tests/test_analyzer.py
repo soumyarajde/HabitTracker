@@ -2,24 +2,28 @@ import pytest
 from datetime import date
 from functools import reduce
 from habittracker.analyzer import HabitAnalyzer
+from habittracker.habitmanager import HabitManager
 
 @pytest.fixture
 def test_analyzer():
-    analyzer=HabitAnalyzer("test_db.json")
+    manager=HabitManager(filename="test_db.json")
+    analyzer=HabitAnalyzer(manager)
     return analyzer
 
 def test_get_currently_tracked_habit(test_analyzer):
-    assert test_analyzer.get_currently_tracked_habits()==['exercise','sleeping','drinking','cleaning','shopping']
+    assert test_analyzer.get_currently_tracked_habits()==['exercise','sleeping','drinking','cleaning','shopping','reading']
 
 def test_get_habits_with_same_period(test_analyzer):
-    assert test_analyzer.get_habits_with_same_period()=={'Daily Habits':['exercise','sleeping','drinking',],'Weekly Habits':['cleaning','shopping']}
+    assert test_analyzer.get_habits_with_same_period()=={'Daily Habits':['exercise','sleeping','drinking','reading'],'Weekly Habits':['cleaning','shopping']}
 
 def test_get_longest_streak(test_analyzer):
     assert test_analyzer.get_longest_streak('exercise')==15
     assert test_analyzer.get_longest_streak('sleeping')==10
+    assert test_analyzer.get_longest_streak('reading')==0
+    assert test_analyzer.get_longest_streak('cleaning')==2
 
 def test_get_longest_streak_all(test_analyzer):
-    assert test_analyzer.get_longest_streak_all()=={'sleeping':10,'drinking':10,'shopping':4,'exercise':15,'cleaning':2}
+    assert test_analyzer.get_longest_streak_all()=={'sleeping':10,'drinking':10,'shopping':4,'exercise':15,'cleaning':2,'reading':0}
 
 def test_longest_streak_non_existent_habit(test_analyzer):
     with pytest.raises (ValueError) as exc_info:
@@ -31,3 +35,7 @@ def test_get_streak(test_analyzer):
     assert test_analyzer.get_streak("drinking",date=date(2025,5,20))==4
     assert test_analyzer.get_streak("sleeping",date=date(2025,5,15))==5
     assert test_analyzer.get_streak("shopping",date=date(2025,5,19))==4
+    assert test_analyzer.get_streak("cleaning",date=date(2025,5,15))==1
+
+def test_get_streak_no_completion(test_analyzer):
+    assert test_analyzer.get_streak('reading')==0

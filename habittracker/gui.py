@@ -12,7 +12,6 @@ class ApplicationGui:
         self.manager=HabitManager()
         self.analyzer=HabitAnalyzer()
 
-
         #create a notebook (tab manager)
         self.notebook = ttk.Notebook(gui)
         self.notebook.pack(expand=True, fill='both')
@@ -31,9 +30,6 @@ class ApplicationGui:
         analyzer_tab = ttk.Frame(self.notebook)
         self.notebook.add(analyzer_tab, text="Analyzer")
         self.build_analyzer_tab(analyzer_tab)
-
-    # def on_click(self):
-    #     print("Button was clicked!")
         
     def build_welcome_tab(self,tab):
         # Top label
@@ -64,7 +60,6 @@ class ApplicationGui:
             self.listbox_pending_this_week.insert(tk.END, habit.upper())
             self.listbox_pending_this_week.pack(fill="both", expand=True)
 
-
     def build_habit_manager_tab(self,tab):
         #create button to show Create New
         self.btn_create_habit=ttk.Button(tab,text="Create New",command=self.on_click_btn_create_habit)
@@ -78,9 +73,8 @@ class ApplicationGui:
     def on_click_btn_create_habit(self):
         self.habit_list_container.pack_forget()
         #create labels and entry fields
-        
         self.create_form_fields.pack(pady=10)
-
+        
         #Name
         ttk.Label(self.create_form_fields,text='Name').grid(row=0,column=0,sticky="w")
         self.name_entry=ttk.Entry(self.create_form_fields,width=30)
@@ -163,8 +157,6 @@ class ApplicationGui:
         else:
             self.manager.activate_habit(name)
         self.show_habits()
-
-   
         
     def build_analyzer_tab(self,tab):
         #create a drop down
@@ -226,10 +218,6 @@ class ApplicationGui:
             self.habit_list_drop_down.pack_forget()
             self.result_label.pack_forget()
             self.habits_list.pack_forget()
-
-        
-        
-
         
     def show_streak(self,evnt):
         habit_name=self.habit_list_drop_down.get()

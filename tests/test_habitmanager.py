@@ -8,11 +8,11 @@ import os
 
 @pytest.fixture
 def habit_manager():
-    file_path = "testdb.json"
-    manager=HabitManager(file_path)
+    file_name = "testdb.json"
+    manager=HabitManager(file_name)
     yield  manager
-    if os.path.exists(file_path):
-        os.remove(file_path)
+    if os.path.exists(file_name):
+        os.remove(file_name)
 
 def test_create_daily_habit(habit_manager):
     habit_manager.create_habit("Drinking","8 glass water",Periodicity.DAILY)
