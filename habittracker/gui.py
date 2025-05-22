@@ -183,10 +183,6 @@ class ApplicationGui:
         self.result_label.pack_forget()
         #create a list box to disply list of values in the result.This is hidden initially.
         self.habits_list=tk.Listbox(tab,font = ("Courier New", 12),width=50)
-        # #create a tree view with two columns
-        # cols = ("habit", "longest streak")
-        # self.tree = ttk.Treeview(tab, columns=cols, show="headings")
-        # self.tree.pack(fill="both", expand=True, padx=10, pady=10)
 
     def on_select_analysis(self,evnt):
         selection=self.analysis_drop_down.get()
