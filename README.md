@@ -28,18 +28,18 @@ A python app to work create and manage habits. It creates daily and weekly habit
    git clone https://github.com/soumyarajde/HabitTracker.git
    cd HabitTracker
    ```
-
+**Create and activate a virtual enivironment**
+```bash
+python3 -m venv venv
+source venv/bin/activate
+ ```
 
 To install the 'habittracker' library and the App use the following pip command:
    ```bash
    pip install .
  
   ```
-**Create and activate a virtual enivironment**
-```bash
-python3 -m venv venv
-source venv/bin/activate
- ```
+
 
 Note:Make sure you have python 3.13 installed on your system.
 
@@ -104,7 +104,7 @@ Distributed under the MIT License.
 
 Soumya Raj - soumya.raj.de@gmail.com
 
-Project Link:
+Project Link: https://github.com/soumyarajde/HabitTracker/
 
 
 
