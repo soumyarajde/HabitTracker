@@ -7,6 +7,7 @@ A python app to work create and manage habits. It creates daily and weekly habit
 - [Features](#features)
 - [Installation](#installation)
 - [Usage](#usage)
+- [Examples](#examples)
 - [Testing](#testing)
 - [Contributing](#contributing)
 - [License](#license)
@@ -79,6 +80,21 @@ By clicking on the Analyzer tab,you can get various information about the habit 
 ![Analyzer Tab showing drop-down with habit names](./screenshots/habit_drop_down.png)
 
 ## Examples
+Example for habit creation and management using HabitManager class
+```python
+from habittracker.habitmanager import HabitManager
+manager=HabitManager()
+# create habit
+manager.create_habit(name="Reading",description="30mins",periodicity="daily")
+print(manager.get_habit("Reading"))
+# check-off habit
+manager.check_off("Reading")
+# deactivate habit
+manager.deactivate_habit("Reading")
+#delete habit
+manager.delete_habit("Reading")
+```
+
 
 
 ## Testing
