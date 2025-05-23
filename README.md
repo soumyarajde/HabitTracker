@@ -1,6 +1,6 @@
-# Habittracker App
+# Habit Tracker App
 
-A python app to work create and manage habits. It creates daily and weekly habit objects and manages it.  Managing include check-off,deactivation,activation and deletion.It also allows to analyze the habits.
+A python app to work create and manage habits. It creates daily and weekly habit objects and manages it.  Managing include check-off, deactivation, activation and deletion.It also allows to analyze the habits.
 
 ## Table of Contents
 
@@ -24,6 +24,12 @@ A python app to work create and manage habits. It creates daily and weekly habit
 
 ## Installation
 
+Note:
+
+> [!NOTE]
+> Make sure you have python 3.13 installed on your system.
+
+
 **Clone the repo**  
    ```bash
    git clone https://github.com/soumyarajde/HabitTracker.git
@@ -42,7 +48,7 @@ To install the 'habittracker' library and the App use the following pip command:
   ```
 
 
-Note:Make sure you have python 3.13 installed on your system.
+
 
 ## Usage
 
@@ -106,6 +112,9 @@ Run the script
 
    ```
 Ensure all tests pass to verify the functionality of app on your system.
+
+> [!IMPORTANT]
+> Testing was performed only on Linux.
 
 ## Contributing
 
