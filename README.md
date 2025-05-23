@@ -24,8 +24,6 @@ A python app to work create and manage habits. It creates daily and weekly habit
 
 ## Installation
 
-Note:
-
 > [!NOTE]
 > Make sure you have python 3.13 installed on your system.
 
