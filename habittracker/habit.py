@@ -1,4 +1,6 @@
 from datetime import datetime,date,time,timedelta
+import logging
+logger = logging.getLogger(__name__)
 
 class Habit:
     """
@@ -24,7 +26,8 @@ class Habit:
         self.creation_date=creation_date
         self.completed_dates=[]
         self.active=active
-        
+        logger.debug(
+            f"Initializing Habit with name: {self.name},description: {self.description},creation_date: {self.creation_date},active: {active}")
 
     def serialize(self):
         """
@@ -70,16 +73,20 @@ class Habit:
         """
         if self.active:
             self.completed_dates.append(date)
+            logger.debug(f"checking of habit: {self.name} on date:{date}")
         else:
+            logging.error(f"Habit:{self.name} is inactive.")
             raise ValueError("Inactive Habit!")
 
     def deactivate_habit(self):
         """Deactivate a habit by changing the value of self.active to False."""
         self.active=False
+        logger.debug(f"Habit:{self.name} deactivated.")
 
     def activate_habit(self):
         """Activate a habit by setting self.active to True"""
         self.active=True
+        logger.debug(f"Habit:{self.name} activated.")
 
     def calculate_streak(self):
         """Method to calculate streak."""

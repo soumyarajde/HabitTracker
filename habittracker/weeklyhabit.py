@@ -1,11 +1,13 @@
 from datetime import datetime,date,timedelta
 from habittracker.habit import Habit
-
+import logging
+logger = logging.getLogger(__name__)
 
 class WeeklyHabit(Habit):
     """A subclass of Habit class which represents weekly habit."""
     def __init__(self,name,description,creation_date=datetime.today().date(),active=True):
         super().__init__(name,description,creation_date,active)
+        logger.debug(f"Initializes WeeklyHabit object with name:{self.name},description: {self.description},creation_date: {self.creation_date},active: {active}")
 
     
     def calculate_streak(self,date=date.today()):
@@ -19,7 +21,7 @@ class WeeklyHabit(Habit):
         # if completed dates is empty streak is zero
         if not self.completed_dates:
             return 0
-        strek=0
+        streak=0
         today=date
         # eliminate duplicate entries by converting into set
         completed_dates=set(self.completed_dates)
@@ -45,7 +47,8 @@ class WeeklyHabit(Habit):
                 current_week_end-=timedelta(days=7)
             else:
                 break
-        return strek
+        logger.info(f"streak for habit:{self.name} on {date} is {streak}")
+        return streak
 
     
     

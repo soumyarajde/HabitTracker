@@ -1,6 +1,8 @@
 import json
 from habittracker.dailyhabit import DailyHabit
 from habittracker.weeklyhabit import WeeklyHabit
+import logging
+logger = logging.getLogger(__name__)
 
 class HabitDataStorage:
     """
@@ -15,6 +17,7 @@ class HabitDataStorage:
             filename(string):name of database."""
         
         self.filename=filename
+        logger.debug(f"Initializes HabitDataStorage with filename {filename}")
 
     def save_data(self):
         """Method to save data to the database."""
@@ -29,6 +32,7 @@ class JsonDatabase(HabitDataStorage):
     
     def __init__(self,filename):
         super().__init__(filename)
+        logger.debug(f"Creating JsonDatabase at {filename}")
 
     def save_data(self,habits):
         """
@@ -45,8 +49,10 @@ class JsonDatabase(HabitDataStorage):
         try:
             with open(self.filename,"w") as f:
                 json.dump(_data,f)
+                logger.debug(f"saving data to file: {self.filename}")
         except FileNotFoundError:
-            print(f"Wrong file name specified : {self.filename}")
+            logger.error(f"Wrong file name specified : {self.filename}")
+        
 
     
     def retrieve_data(self):
@@ -60,11 +66,14 @@ class JsonDatabase(HabitDataStorage):
         try:
             with open(self.filename) as f:
                 data=json.load(f)
+                logger.debug(f"Loading data from file {self.filename}")
          # return null set when the file is empty or does not exist.       
         except json.decoder.JSONDecodeError as e:
+            logger.error(f"JSONDecodeError")
             print(f"Error loading json {e}")
             return {}
         except FileNotFoundError as e:
+            logger.error(f"file: {self.filename} not found.")
             print(f"Error loading json {e}")
             return {} 
         # consider each item in the data dict.Convert it back to habit object by deserialization.

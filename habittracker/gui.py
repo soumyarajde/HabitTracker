@@ -4,13 +4,15 @@ from habittracker.constants import Periodicity,AnalyzerOptions
 from tkinter import messagebox
 from habittracker.habitmanager import HabitManager
 from habittracker.analyzer import HabitAnalyzer
+import logging
+logger = logging.getLogger(__name__)
 
 class ApplicationGui:
     def __init__(self,gui):
         gui.title("Habit Tracker")
         gui.geometry("400x300")
         self.manager=HabitManager()
-        self.analyzer=HabitAnalyzer()
+        self.analyzer=HabitAnalyzer(self.manager)
 
         #create a notebook (tab manager)
         self.notebook = ttk.Notebook(gui)
@@ -87,6 +89,7 @@ class ApplicationGui:
 
         #label Periodicity
         ttk.Label(self.create_form_fields,text='Periodicity').grid(row=2,column=0,sticky="w")
+
         # pariodicity values drop down
         self.period_drop_down=ttk.Combobox(self.create_form_fields,values=[p.value for p in Periodicity],state="readonly",width=30)
         self.period_drop_down.current(0)
@@ -150,7 +153,6 @@ class ApplicationGui:
         except ValueError as e:
             messagebox.showerror("Error",e)
 
-
     def status_change_habit(self,name):
         if self.manager.habits[name].active:
             self.manager.deactivate_habit(name)
@@ -177,11 +179,17 @@ class ApplicationGui:
         self.habits_list=tk.Listbox(tab,font = ("Courier New", 12),width=50)
 
     def on_select_analysis(self,evnt):
+        # store input from analysis drop down selection
         selection=self.analysis_drop_down.get()
+        #convert to enum
         selected_analysis=AnalyzerOptions(selection)
+        #create option values for habit drop down list
+        #to disply when analysis selcetion is for current streak or longest streak
+        
         habits=[name.upper()for name,habit in self.manager.habits.items()]
         habit_drop_down_options=['Select a habit']+habits
         width_drop_down=max(len(option)for option in habit_drop_down_options)
+        # set width of drop down to max length of otion
                                                         
         if selected_analysis==AnalyzerOptions.CURRENT_STREAK:
             self.habits_list.pack_forget()

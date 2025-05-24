@@ -1,11 +1,12 @@
 from datetime import datetime,date,timedelta
 from habittracker.habit import Habit
-
+import logging
+logger = logging.getLogger(__name__)
 class DailyHabit(Habit):
     """A subclass of Habit class which represents daily habit."""
     def __init__(self,name,description,creation_date=datetime.today().date(),active=True):
         super().__init__(name,description,creation_date,active)
-
+        logger.debug(f"Initializes DailyHabit object with name:{self.name},description: {self.description},creation_date: {self.creation_date},active: {active}")
 
     def calculate_streak(self,date=date.today()):
         """
@@ -29,6 +30,7 @@ class DailyHabit(Habit):
         while today in self.completed_dates:
             streak+=1
             today-=timedelta(days=1)
+        logger.info(f"streak for habit:{self.name} on {date} is {streak}")
         return streak
                
 

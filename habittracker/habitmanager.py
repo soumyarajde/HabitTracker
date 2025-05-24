@@ -3,19 +3,24 @@ from habittracker.dailyhabit import DailyHabit
 from habittracker.weeklyhabit import WeeklyHabit
 from habittracker.database import JsonDatabase
 from habittracker.constants import Periodicity
+import logging
+logger = logging.getLogger(__name__)
 
 class HabitManager:
     """Manages all habits.
-    Attributes:habits{Habit}:a dictionary of Habit class objects.
-                database:HabitDataStorage:an instance of HabitDataStorage used for databse operations."""
+    Attributes:_habits{Habit}:a dictionary of Habit class objects.
+                database:JsonDatabase:an instance of JsonDatabase used for databse operations."""
     def __init__(self,filename='db.json'):
         """Initialize HabitManager object.
         Args:
             filename(string):file name of database.
             """
+        logger.debug(f"Initializing Habit Manager")
         self._habits=dict()
         self.database=JsonDatabase(str(filename))
         self._habits=self.database.retrieve_data()
+        logger.debug(f"Loading database from {filename}")
+
 
     def create_habit(self,name=None,description=None,periodicity=None):
         """
@@ -28,6 +33,7 @@ class HabitManager:
         Raises:
             ValueError("Unknown periodicity."):If periodicity is not daily or weekly
             ValueError("Habit already exists"):If tries to create an existing habit."""
+        logger.debug(f"creating habit")
         # Check for name is None
         if name==None:
             raise ValueError("Invalid Habit!")
@@ -44,6 +50,7 @@ class HabitManager:
             elif periodicity==Periodicity.WEEKLY:
                 temp_habit=WeeklyHabit(name,description)
                 self._habits.update({name.lower():temp_habit})
+                logger.info(f"Habit {name} created.")
             # if periodicity is other than daily or weekly raise error.
             else:
                 raise ValueError("Unknown periodicity.")
@@ -64,8 +71,10 @@ class HabitManager:
         # check for habit is existing and if true remove it from form the habits dict.
         if name.lower()in self._habits:
             self._habits.pop(name.lower())
+            logger.info(f"Habit: {name} deleted.")
         else:
-        # habit not existing raise error
+            # habit not existing raise error
+            logger.error(f"Habit: {name} not found.")
             raise ValueError("Habit does not exist.")
         # update database
         self.database.save_data(self._habits)
@@ -81,8 +90,10 @@ class HabitManager:
         # check for habit existence and if true deactivate it
         if name.lower() in self._habits:
             self._habits[name.lower()].deactivate_habit()
+            logger.info(f"Habit: {name} deactivated.")
         else:
-        # otherwise raise error
+            # otherwise raise error
+            logger.error(f"Habit: {name} not found.")
             raise ValueError("Habit does not exist.")
         # update database
         self.database.save_data(self._habits)
@@ -98,8 +109,10 @@ class HabitManager:
         # check for habit existence and if true activate it
         if name.lower() in self._habits:
             self._habits[name.lower()].activate_habit()
+            logger.info(f"Habit: {name} activated.")
         # otherwise raise error
         else:
+            logger.error(f"Habit: {name} not found.")
             raise ValueError("Habit does not exist.")
         # update database
         self.database.save_data(self._habits)
@@ -115,8 +128,10 @@ class HabitManager:
         # check for habit existence and if true call check_off()
         if name.lower() in self._habits:
             self._habits[name.lower()].check_off(date)
+            logger.info(f"Habit: {name} checked off on {date}")
         # otherwise raise error
         else:
+            logger.error(f"Habit: {name} not found.")
             raise ValueError("Habit does not exist.")
         # update databse
         self.database.save_data(self._habits)
@@ -134,6 +149,7 @@ class HabitManager:
             # if today is not in the list of completed dates add habit to the pending list.
                 if date not in self._habits[name].completed_dates:
                     pending_habits_daily.append(name)
+        logger.info(f"Pending daily habits: {pending_habits_daily}")            
         return pending_habits_daily
     
     def view_pending_habits_weekly(self,date=date.today()):
@@ -152,6 +168,7 @@ class HabitManager:
                 #if no date in the current week is in the completed dates list add it to the pending habit list.
                 if not any(current_week_start<=d<=current_week_end for d in self._habits[name].completed_dates):
                     pending_habits_weekly.append(name)
+        logger.info(f"Pending weekly habits:{pending_habits_weekly}")
         return pending_habits_weekly
     
     @property
@@ -162,13 +179,13 @@ class HabitManager:
     def get_habit(self,name:str):
         """Fetch a single habit by name (case insensitive)"""
         try:
+            logger.debug(f"fetching habit: {name}")
             return self._habits[name.lower()]
         except KeyError:
+            logger.error(f"Habit: {name} not found.")
             raise ValueError(f"No Habit called {name}")
 
 
 if __name__ == "__main__":
     hm = HabitManager()
-    hm.create_habit("dinner out","aaa","weekly")
-    hm.check_off("dinner out")
    
