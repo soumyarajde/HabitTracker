@@ -20,7 +20,7 @@ if __name__=='__main__':
 
     # logging to stdout
     ch = logging.StreamHandler(sys.stdout)
-    ch.setLevel(logging.DEBUG)                 
+    ch.setLevel(logging.INFO)                 
     ch.setFormatter(formatter)
 
     # Attach both handlers to the logger

@@ -26,8 +26,8 @@ class Habit:
         self.creation_date=creation_date
         self.completed_dates=[]
         self.active=active
-        logger.debug(
-            f"Initializing Habit with name: {self.name},description: {self.description},creation_date: {self.creation_date},active: {active}")
+        # logger.debug(
+        #     f"Initializing Habit with name: {self.name},description: {self.description},creation_date: {self.creation_date},active: {active}")
 
     def serialize(self):
         """

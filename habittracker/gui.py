@@ -255,16 +255,16 @@ class ApplicationGui:
         self.habits_list.pack()
 
     def show_daily_habits(self):
-        habits=self.analyzer.get_habits_with_same_period()
+        habits=self.analyzer.get_habits_with_same_period(period=Periodicity.DAILY)
         self.habits_list.delete(0,tk.END)
-        for habit in habits['Daily Habits']:
+        for habit in habits:
             self.habits_list.insert(tk.END,habit.upper())
         self.habits_list.pack()
 
     def show_weekly_habits(self):
-        habits=self.analyzer.get_habits_with_same_period()
+        habits=self.analyzer.get_habits_with_same_period(period=Periodicity.WEEKLY)
         self.habits_list.delete(0,tk.END)
-        for habit in habits['Weekly Habits']:
+        for habit in habits:
             self.habits_list.insert(tk.END,habit.upper())
         self.habits_list.pack()
 

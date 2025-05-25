@@ -42,7 +42,7 @@ class WeeklyHabit(Habit):
         while True:
             if any(current_week_start<=d<=current_week_end for d in completed_dates):
                 #if at least one date in the current week is in list incarese streak by 1.
-                strek+=1
+                streak+=1
                 current_week_start-=timedelta(days=7)
                 current_week_end-=timedelta(days=7)
             else:
