@@ -39,14 +39,21 @@ class HabitManager:
         logger.debug(f"creating habit")
         # Check for name is None
         if name == None:
-            raise ValueError("Invalid Habit!")
+            raise ValueError(f"Invalid Habit: {name}")
         # Check for empty name
         elif name.strip() == "":
-            raise ValueError("Invalid Habit!")
+            raise ValueError(f"Invalid Habit: {name}")
         # check for habit existing or not
         elif not name.lower() in self._habits:
+            #check for descriptioon is None
+            if description==None:
+                raise ValueError(f"Invalid Habit: {name}")
+            #check for empty description
+            elif description.strip()=="":
+                raise ValueError(f"Invalid Habit: {name}")
+
             # check for periodicty daily and create the correct object
-            if periodicity == Periodicity.DAILY:
+            elif periodicity == Periodicity.DAILY:
                 temp_habit = DailyHabit(name, description)
                 self._habits.update({name.lower(): temp_habit})
                 # check for periodicty weekly and create the correct object
@@ -59,7 +66,7 @@ class HabitManager:
                 raise ValueError("Unknown periodicity.")
         # if habit name is already there raise error
         else:
-            raise ValueError("Habit already exists")
+            raise ValueError(f"Habit: {name} already exists")
         # update database
         self.database.save_data(self._habits)
 
@@ -78,7 +85,7 @@ class HabitManager:
         else:
             # habit not existing raise error
             logger.error(f"Habit: {name} not found.")
-            raise ValueError("Habit does not exist.")
+            raise ValueError(f"Habit: {name} does not exist.")
         # update database
         self.database.save_data(self._habits)
 
@@ -97,7 +104,7 @@ class HabitManager:
         else:
             # otherwise raise error
             logger.error(f"Habit: {name} not found.")
-            raise ValueError("Habit does not exist.")
+            raise ValueError(f"Habit {name} does not exist.")
         # update database
         self.database.save_data(self._habits)
 
@@ -116,7 +123,7 @@ class HabitManager:
         # otherwise raise error
         else:
             logger.error(f"Habit: {name} not found.")
-            raise ValueError("Habit does not exist.")
+            raise ValueError(f"Habit: {name} does not exist.")
         # update database
         self.database.save_data(self._habits)
 
@@ -135,7 +142,7 @@ class HabitManager:
         # otherwise raise error
         else:
             logger.error(f"Habit: {name} not found.")
-            raise ValueError("Habit does not exist.")
+            raise ValueError(f"Habit {name} does not exist.")
         # update databse
         self.database.save_data(self._habits)
 

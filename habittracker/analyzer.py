@@ -88,6 +88,7 @@ class HabitAnalyzer:
         return list(habit_names)
 
     def get_habits_with_same_period(self, period):
+        
         """Method to filter habits with same periodicity.
         Args:
             period:Enum of Periodicity
@@ -95,15 +96,16 @@ class HabitAnalyzer:
             list:list of habit names
 
         """
+
         if period == Periodicity.DAILY:
             class_name = DailyHabit
         if period == Periodicity.WEEKLY:
             class_name = WeeklyHabit
 
         logger.debug(f"Fetching habits with same periodicity.")
-        # filter those (name, Habit) pairs based on the period
+        # filter those active (name, Habit) pairs based on the period 
         _habits = filter(
-            lambda habit: isinstance(habit[1], class_name), self.manager.habits.items()
+            lambda habit: isinstance(habit[1], class_name) and habit[1].active , self.manager.habits.items()
         )
         # from each tuple pull out only name(key)
         _habits_names = list(map(lambda habit: habit[0], _habits))
@@ -162,24 +164,17 @@ class HabitAnalyzer:
             )
             raise ValueError(f"Habit: {name} does not exist.")
 
-    def get_longest_streak_all(self):
+    def get_longest_streak_all(self): # TODO filter inactive habits
         """Method to get longest streak of all habits.
         Returns:
             dictionary:{habit name:longest streak}"""
-        logger.debug(f"Computing longest strea for all habits")
-        # map for each entry in habits.items which is a tuple (name,habit object)
-        # to fetch habit name which is habit[0] in the tuple
-        # call method to calculate longest streak for this habit name
-        # iterate over entire habits
-        # and convert map object into dict.
-        return dict(
-            map(
-                lambda habit: (habit[0], self.get_longest_streak(habit[0])),
-                self.manager.habits.items(),
-            )
-        )
+        logger.debug(f"Computing longest streak for all habits")
+        #filter active habits
+        active=filter(lambda habit:habit[1].active,self.manager.habits.items())
+        # for each active habit call method to calculate longest streak
+        # convert map object into dict
+        return dict(map(lambda habit:(habit[0],self.get_longest_streak(habit[0])),active))
 
 
-if __name__ == "__main__":
 
-    ha = HabitAnalyzer("test_db.json")
+   
