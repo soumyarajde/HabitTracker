@@ -87,28 +87,27 @@ class HabitAnalyzer:
         # convert map object into a list and return
         return list(habit_names)
 
-    def get_habits_with_same_period(self,period):
-   
+    def get_habits_with_same_period(self, period):
         """Method to filter habits with same periodicity.
         Args:
             period:Enum of Periodicity
         Returns:
             list:list of habit names
-           
+
         """
         if period == Periodicity.DAILY:
-            class_name=DailyHabit
-        if period==Periodicity.WEEKLY:
-            class_name=WeeklyHabit
+            class_name = DailyHabit
+        if period == Periodicity.WEEKLY:
+            class_name = WeeklyHabit
 
         logger.debug(f"Fetching habits with same periodicity.")
         # filter those (name, Habit) pairs based on the period
-        _habits = filter(lambda habit: isinstance(habit[1],class_name), self.manager.habits.items())
+        _habits = filter(
+            lambda habit: isinstance(habit[1], class_name), self.manager.habits.items()
+        )
         # from each tuple pull out only name(key)
-        _habits_names=list( map(lambda habit: habit[0], _habits))
+        _habits_names = list(map(lambda habit: habit[0], _habits))
         return _habits_names
-            
-       
 
     def get_longest_streak(self, name):
         """Method to calculate longest streak of a given habit.
@@ -148,7 +147,7 @@ class HabitAnalyzer:
                     weeks.append(date - timedelta(days=date.weekday()))
                 # Eliminate duplicate entries and sort the dates.
                 weeks = list(sorted(set(weeks)))
-               
+
                 reduce_weeks = partial(
                     reducer, timestamps=weeks, delta=timedelta(days=7)
                 )
