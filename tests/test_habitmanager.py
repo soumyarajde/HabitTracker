@@ -9,7 +9,7 @@ import os
 
 @pytest.fixture
 def habit_manager():
-    file_name = "testdb.json"
+    file_name = "test_hm.json"
     manager = HabitManager(file_name)
     yield manager
     if os.path.exists(file_name):
@@ -32,7 +32,7 @@ def test_create_habit_already_exists(habit_manager):
     habit_manager.create_habit("Drinking", "8 glass water", Periodicity.DAILY)
     with pytest.raises(ValueError) as exc_info:
         habit_manager.create_habit("drinking")
-    assert str(exc_info.value) == "Habit already exists"
+    assert str(exc_info.value) == "Habit: drinking already exists"
 
 
 def test_create_habit_invalid_period(habit_manager):
@@ -40,16 +40,29 @@ def test_create_habit_invalid_period(habit_manager):
         habit_manager.create_habit("Drinking", "8 glass water", "7")
     assert str(exc_info.value) == "Unknown periodicity."
 
-
-# TODO test_create_empty_habit #inputvalidation
 def test_create_empty_habit(habit_manager):
     with pytest.raises(ValueError) as exc_info:
         habit_manager.create_habit(" ", "test", Periodicity.DAILY)
-    assert str(exc_info.value) == "Invalid Habit!"
+    assert str(exc_info.value) == "Invalid Habit:  "
+    with pytest.raises(ValueError) as exc_info:
+        habit_manager.create_habit("", "test", Periodicity.DAILY)
+    assert str(exc_info.value) == "Invalid Habit: "
+
+def test_create_None_habit(habit_manager):
     with pytest.raises(ValueError) as exc_info:
         habit_manager.create_habit(None, "test", Periodicity.DAILY)
-    assert str(exc_info.value) == "Invalid Habit!"
+    assert str(exc_info.value) == "Invalid Habit: None"
 
+def test_create_empty_habit_desc(habit_manager):
+    with pytest.raises(ValueError) as exc_info:
+        habit_manager.create_habit("test", None, Periodicity.DAILY)
+    assert str(exc_info.value) == "Invalid Habit: test"
+
+
+def test_create_invalid_habit_period(habit_manager):
+    with pytest.raises(ValueError) as exc_info:
+        habit_manager.create_habit("test","test desc", 3)
+    assert str(exc_info.value) == "Unknown periodicity."
 
 def test_delete_habit(habit_manager):
     # first create a habit.Then delete it.
@@ -61,7 +74,7 @@ def test_delete_habit(habit_manager):
 def test_delete_non_existent_habit(habit_manager):
     with pytest.raises(ValueError) as exc_info:
         habit_manager.delete_habit("exercise")
-    assert str(exc_info.value) == "Habit does not exist."
+    assert str(exc_info.value) == "Habit: exercise does not exist."
 
 
 def test_deactivate_activate(habit_manager):
