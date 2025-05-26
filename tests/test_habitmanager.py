@@ -55,6 +55,11 @@ def test_create_None_habit(habit_manager):
 
 def test_create_empty_habit_desc(habit_manager):
     with pytest.raises(ValueError) as exc_info:
+        habit_manager.create_habit("test", " ", Periodicity.DAILY)
+    assert str(exc_info.value) == "Invalid Habit: test"
+
+def test_create_None_habit_desc(habit_manager):
+    with pytest.raises(ValueError) as exc_info:
         habit_manager.create_habit("test", None, Periodicity.DAILY)
     assert str(exc_info.value) == "Invalid Habit: test"
 
@@ -73,8 +78,8 @@ def test_delete_habit(habit_manager):
 
 def test_delete_non_existent_habit(habit_manager):
     with pytest.raises(ValueError) as exc_info:
-        habit_manager.delete_habit("exercise")
-    assert str(exc_info.value) == "Habit: exercise does not exist."
+        habit_manager.delete_habit("nonexistent")
+    assert str(exc_info.value) == "Habit: nonexistent does not exist."
 
 
 def test_deactivate_activate(habit_manager):
@@ -83,6 +88,16 @@ def test_deactivate_activate(habit_manager):
     assert not habit_manager.habits["drinking"].active
     habit_manager.activate_habit("drinking")
     assert habit_manager.habits["drinking"].active
+
+def test_activate_nonexistent_habit(habit_manager):
+    with pytest.raises(ValueError) as exc_info:
+        habit_manager.activate_habit("nonexistent")
+    assert str(exc_info.value) == "Habit: nonexistent does not exist."
+
+def test_deactivate_nonexistent_habit(habit_manager):
+    with pytest.raises(ValueError) as exc_info:
+        habit_manager.deactivate_habit("nonexistent")
+    assert str(exc_info.value) == "Habit: nonexistent does not exist."
 
 
 def test_dactivate_checkoff_habit(habit_manager):
@@ -106,6 +121,10 @@ def test_check_off_habit_custom_date(habit_manager):
     habit_manager.check_off("Shopping", custom_date)
     assert custom_date in habit_manager.habits["shopping"].completed_dates
 
+def test_check_off_nonexistent_habit(habit_manager):
+    with pytest.raises(ValueError) as exc_info:
+        habit_manager.check_off("nonexistent",date=date.today())
+    assert str(exc_info.value) == "Habit: nonexistent does not exist."
 
 def test_view_pending_habits_daily(habit_manager):
     # create a daily habit
@@ -125,3 +144,20 @@ def test_view_pending_habits_weekly(habit_manager):
     # create another weekly habit and no check off
     habit_manager.create_habit("Workout", "test", Periodicity.WEEKLY)
     assert habit_manager.view_pending_habits_weekly() == ["workout"]
+
+def test_get_habit(habit_manager):
+    habit_manager.create_habit("Drinking", "8 glass water", Periodicity.DAILY)
+    assert habit_manager.get_habit("Drinking").name=="Drinking"
+    assert habit_manager.get_habit("Drinking").description=="8 glass water"
+    assert habit_manager.get_habit("Drinking").creation_date==date.today()
+    assert habit_manager.get_habit("Drinking").completed_dates==[]
+    assert habit_manager.get_habit("Drinking").active==True
+
+def test_get_habit_nonexistent_habit(habit_manager):
+    with pytest.raises(ValueError) as exc_info:
+        habit_manager.get_habit("nonexistent")
+    assert str(exc_info.value) == "Habit: nonexistent does not exist."
+
+
+
+

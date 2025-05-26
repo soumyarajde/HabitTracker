@@ -6,7 +6,7 @@ import logging
 logger = logging.getLogger(__name__)
 
 
-class HabitDataStorage:
+class FileDataStorage:
     """
     Super class of all file based storage classes.
     Attribute:
@@ -15,12 +15,12 @@ class HabitDataStorage:
 
     def __init__(self, filename):
         """
-        Initializes a new instance of HabitDataStorage.
+        Initializes a new instance of FileDataStorage.
         Arg:
             filename(string):name of database."""
 
         self.filename = filename
-        logger.debug(f"Initializes HabitDataStorage with filename {filename}")
+        logger.debug(f"Initializes FileDataStorage with filename {filename}")
 
     def save_data(self):
         """Method to save data to the database."""
@@ -31,8 +31,8 @@ class HabitDataStorage:
         raise NotImplementedError
 
 
-class JsonDatabase(HabitDataStorage):
-    """Represents a subclass of class HabitDataStorage which stores data in json file."""
+class JsonDatabase(FileDataStorage):
+    """Represents a subclass of class FileDataStorage which stores data in json file."""
 
     def __init__(self, filename):
         super().__init__(filename)
@@ -56,6 +56,7 @@ class JsonDatabase(HabitDataStorage):
                 logger.debug(f"saving data to file: {self.filename}")
         except FileNotFoundError:
             logger.error(f"Wrong file name specified : {self.filename}")
+            raise
 
     def retrieve_data(self):
         """

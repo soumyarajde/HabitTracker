@@ -104,7 +104,7 @@ class HabitManager:
         else:
             # otherwise raise error
             logger.error(f"Habit: {name} not found.")
-            raise ValueError(f"Habit {name} does not exist.")
+            raise ValueError(f"Habit: {name} does not exist.")
         # update database
         self.database.save_data(self._habits)
 
@@ -142,7 +142,7 @@ class HabitManager:
         # otherwise raise error
         else:
             logger.error(f"Habit: {name} not found.")
-            raise ValueError(f"Habit {name} does not exist.")
+            raise ValueError(f"Habit: {name} does not exist.")
         # update databse
         self.database.save_data(self._habits)
 
@@ -200,8 +200,5 @@ class HabitManager:
             return self._habits[name.lower()]
         except KeyError:
             logger.error(f"Habit: {name} not found.")
-            raise ValueError(f"No Habit called {name}")
+            raise ValueError(f"Habit: {name} does not exist.")
 
-
-if __name__ == "__main__":
-    hm = HabitManager()

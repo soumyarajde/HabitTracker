@@ -35,9 +35,7 @@ class Habit:
         self.creation_date = creation_date
         self.completed_dates = []
         self.active = active
-        # logger.debug(
-        #     f"Initializing Habit with name: {self.name},description: {self.description},creation_date: {self.creation_date},active: {active}")
-
+      
     def serialize(self):
         """
         Convert Habit class object into json serializable dictionary.
@@ -80,7 +78,7 @@ class Habit:
 
     def __repr__(self):
         """Returns the string representation of an object."""
-        return f"{self.__class__.__name__}(Name:{self.name}, Description:{self.description}, Creation_date:{self.creation_date}, Completed_dates:{self.completed_dates}, Active:{self.active})"  # TODO also print the name of the class at the begining of the f string for easy debugging
+        return f"{self.__class__.__name__}(Name:{self.name}, Description:{self.description}, Creation_date:{self.creation_date}, Completed_dates:{self.completed_dates}, Active:{self.active})"
 
     def check_off(self, date=datetime.today().date()):
         """

@@ -103,6 +103,10 @@ manager.delete_habit("Reading")
 
 ## Testing
 
+> [!NOTE]
+> Make sure you have pytest and pytest-cov installed on your system.
+
+
 The Application comes with a suite of tests.To run them,
 Run the script
    ```bash
