@@ -5,3 +5,5 @@ habittracker.egg-info/
 test1.py
 test.json
 habittracker.log
+.coverage
+coverage.xml

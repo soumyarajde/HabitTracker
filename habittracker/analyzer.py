@@ -164,7 +164,7 @@ class HabitAnalyzer:
             )
             raise ValueError(f"Habit: {name} does not exist.")
 
-    def get_longest_streak_all(self): # TODO filter inactive habits
+    def get_longest_streak_all(self):
         """Method to get longest streak of all habits.
         Returns:
             dictionary:{habit name:longest streak}"""

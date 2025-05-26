@@ -234,6 +234,12 @@ def test_get_streak(test_analyzer):
     assert test_analyzer.get_streak("shopping", date=date(2025, 5, 19)) == 4
     assert test_analyzer.get_streak("cleaning", date=date(2025, 5, 15)) == 1
 
+def test_get_streak_nonexisting_habit(test_analyzer):
+    with pytest.raises(ValueError) as exc_info:
+        test_analyzer.get_streak("nonexistent", date=date(2025, 5, 20))
+    assert str(exc_info.value) == "Habit: nonexistent does not exist."
+
+
 def test_get_streak_repeating_dates_daily(test_analyzer):
     assert test_analyzer.get_streak("repeating habit", date=date(2025, 5, 21)) == 2
     assert test_analyzer.get_streak("repeating habit", date=date(2025, 5, 22)) == 3
