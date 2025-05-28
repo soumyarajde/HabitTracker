@@ -1,6 +1,6 @@
 # Habit Tracker App
 
-A python app to work create and manage habits. It creates daily and weekly habit objects and manages it.  Managing include check-off, deactivation, activation and deletion.It also allows to analyze the habits.
+A python app to work create and manage habits. It creates daily and weekly habit objects and manages it.  Managing include check-off, deactivation, activation and deletion. It also allows analyzing the habits.
 
 ## Table of Contents
 
@@ -16,8 +16,8 @@ A python app to work create and manage habits. It creates daily and weekly habit
 ## Features
 
 - Create habit with name,description and periodicity
-- check-off habit,deactivate/activate and delete habit.
-- HabitAnalyzer to perform analysis.
+- Check-off habit,deactivate/activate and delete habit
+- HabitAnalyzer to perform analysis
 - Json database for storing and retrieving data
 - Documnented and easy to follow code
 
@@ -39,7 +39,7 @@ python3 -m venv venv
 source venv/bin/activate
  ```
 
-To install the 'habittracker' library and the App use the following pip command:
+To install the 'habittracker' library and the app use the following pip command:
    ```bash
    pip install .
  
@@ -55,7 +55,7 @@ To install the 'habittracker' library and the App use the following pip command:
    python main.py
 
    ```
-Application window with multiple tabs opens when user runs the main.py file
+Application window with multiple tabs opens when user runs the main.py file.
 
 ### Welcome Tab
 Welcome tab reminds the user about pending habits.
@@ -68,17 +68,17 @@ managing habits.
 ![Habit Manager tab](./screenshots/habitmanager_tab.png)
 
 #### Creating a Habit
-On clicking create new input fields for Name, Description, and Periodicity will appear.Enter all fields and click create button to create a habit and update the database.
+On clicking create new input fields for *Name*, *Description*, and *Periodicity* will appear.Enter all fields and click create button to create a habit and update the database.
 
 ![Create New Habit](./screenshots/create_new_habit.png)
 
 #### Habit Management
-Clicking on View shows the habit management options.Click on the button to perform the required fucntion.
+Clicking on *View* shows the habit management options.Click on the button to perform the required fucntion.
 
 ![Habit Management](./screenshots/view_habit.png)
 
 ### Analyzer Tab
-By clicking on the Analyzer tab,you can get various information about the habit such as current streak,longest streak,etc.This tab shows a drop-down which lists various analysis options.You have to select one.When user select option for streak it shows another drop-down with habit names.User have to select the habit from the list for which analysis is to be done.
+By clicking on the *Analyzer* tab,you can get various information about the habit such as current streak,longest streak,etc. This tab shows a drop-down which lists various analysis options. You have to select one. When user select option for streak it shows another drop-down with habit names. User have to select the habit from the list for which analysis is to be done.
 
 ![Analyzer Tab](./screenshots/analyzer_tab.png)
 ![Analyzer Tab showing drop-down with habit names](./screenshots/habit_drop_down.png)
@@ -108,11 +108,17 @@ manager.delete_habit("Reading")
 
 
 The Application comes with a suite of tests.To run them,
-Run the script
+Run the command
    ```bash
    pytest tests
 
    ```
+To see test coverage, run this
+   ```bash
+   pytest --cov=habittracker --cov-report=xml tests/
+
+   ```
+
 Ensure all tests pass to verify the functionality of app on your system.
 
 > [!IMPORTANT]

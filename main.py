@@ -26,6 +26,9 @@ if __name__=='__main__':
     # Attach both handlers to the logger
     logger.addHandler(fh)
     logger.addHandler(ch)
+
+    # Create the main Tkinter application window
     gui=tk.Tk()
+    # Instantiate ApplicationGui passing in the main window.
     app=ApplicationGui(gui)
     gui.mainloop()

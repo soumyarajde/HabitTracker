@@ -10,13 +10,27 @@ logger = logging.getLogger(__name__)
 
 
 class ApplicationGui:
+    """
+    Represents the graphical user interface.
+    Attributes:
+        manager:HabitManager object
+        analyzer:HabitAnalyzer object
+    """
     def __init__(self, gui):
+        """
+        Initializes ApplicationGui object by setting up the main window.
+        set up habit management and analysis components.
+        """
+        # set the window title to 'Habit Tracker'
         gui.title("Habit Tracker")
+        # set size of the window
         gui.geometry("400x300")
+        # Create a HabitManager instance to manage habits.
         self.manager = HabitManager()
+        # Create a HabitAnalyzer instance to analyze habits.
         self.analyzer = HabitAnalyzer(self.manager)
 
-        # create a notebook (tab manager)
+        # create a notebook (tab manager) to set up tabs.
         self.notebook = ttk.Notebook(gui)
         self.notebook.pack(expand=True, fill="both")
 
@@ -36,6 +50,14 @@ class ApplicationGui:
         self.build_analyzer_tab(analyzer_tab)
 
     def build_welcome_tab(self, tab):
+        """
+        Method to define the welcome tab.
+        It creates a top label to show welcome message,
+        two lists to show pending daily and weekly and
+        labels for each list.
+        Args: 
+            tab:reference to Tk frame
+        """
         # Top label
         tk.Label(tab, text="Hi, Welcome!", font=("Helvetica", 20, "bold")).pack(pady=50)
         # create a frame to hold pending habit lists.
@@ -57,7 +79,6 @@ class ApplicationGui:
         # Pending for this week list box(right)
         self.pending_this_week = tk.Frame(self.pending_list_frame)
         self.pending_this_week.pack(side="left", fill="both", expand=True, padx=(0, 10))
-
         label_pending_this_week = tk.Label(
             self.pending_this_week, text="Pending This Week", font=("Helvetica", "12")
         )
@@ -69,9 +90,17 @@ class ApplicationGui:
             self.listbox_pending_this_week.pack(fill="both", expand=True)
 
     def build_habit_manager_tab(self, tab):
+        """
+        Method to define the habit manager tab.Creates two buttons 'create new' and view.
+        Setting up frames for create form fields and list of habits container which appers
+        on clicking create new and view buttons respectively.
+        Args: 
+            tab:reference to Tk frame
+        """
+
         # create button to show Create New
         self.btn_create_habit = ttk.Button(
-            tab, text="Create New", command=self.on_click_btn_create_habit
+            tab, text="Create New", command=self.on_click_btn_create_new_habit
         )
         self.btn_create_habit.pack(pady=30)
         # create view button
@@ -82,7 +111,12 @@ class ApplicationGui:
         self.habit_list_container = ttk.Frame(tab)
         self.create_form_fields = ttk.Frame(tab)
 
-    def on_click_btn_create_habit(self):
+    def on_click_btn_create_new_habit(self):
+        """
+        Method to define the action on clicking create new button.
+        It displays input fields for habit name,description and periodicity
+        and a create button to create habit.
+        """
         self.habit_list_container.pack_forget()
         # create labels and entry fields
         self.create_form_fields.pack(pady=10)
@@ -106,7 +140,7 @@ class ApplicationGui:
             row=2, column=0, sticky="w"
         )
 
-        # pariodicity values drop down
+        # periodicity values drop down
         self.period_drop_down = ttk.Combobox(
             self.create_form_fields,
             values=[p.value for p in Periodicity],
@@ -126,6 +160,7 @@ class ApplicationGui:
         messagebox.showerror("Error", "Please fill all the fields.")
 
     def create_habit(self):
+        """Method to create a habit with given input details."""
         name = self.name_entry.get()
         desc = self.desc_entry.get()
         period = self.period_drop_down.get()
@@ -183,7 +218,6 @@ class ApplicationGui:
             ).pack(side="right")
 
     def delete_habit(self, name):
-        # print("Delete")
         self.manager.delete_habit(name=name)
         self.show_habits()
 
@@ -202,6 +236,11 @@ class ApplicationGui:
         self.show_habits()
 
     def build_analyzer_tab(self, tab):
+        """
+        Method to define the analyzer tab.
+        Args: 
+            tab:reference to Tk frame
+        """
         # create a drop down
         analysis_drop_down_width = max(len(option.value) for option in AnalyzerOptions)
         self.analysis_drop_down = ttk.Combobox(
@@ -225,6 +264,7 @@ class ApplicationGui:
         self.habits_list = tk.Listbox(tab, font=("Courier New", 12), width=50)
 
     def on_select_analysis(self, evnt):
+        """Method defining the action on selecting analysis options from the drop down."""
         # store input from analysis drop down selection
         selection = self.analysis_drop_down.get()
         # convert to enum
@@ -276,6 +316,7 @@ class ApplicationGui:
             self.habits_list.pack_forget()
 
     def show_streak(self, evnt):
+        """Method to show current streak of selected habit."""
         habit_name = self.habit_list_drop_down.get()
         try:
             current_streak = self.analyzer.get_streak(name=habit_name)
@@ -293,6 +334,7 @@ class ApplicationGui:
             self.result_label.pack(pady=50)
 
     def show_longest_streak(self, evnt):
+        """Method to show longest streak of selected habit."""
         habit_name = self.habit_list_drop_down.get()
         try:
             longest_streak = self.analyzer.get_longest_streak(name=habit_name)
@@ -306,6 +348,7 @@ class ApplicationGui:
             self.result_label.pack(pady=50)
 
     def show_currently_tracked_habits(self):
+        """Method to show currently tracked habits."""
         currently_tracked_habits = self.analyzer.get_currently_tracked_habits()
         self.habits_list.delete(0, tk.END)
         for habit in currently_tracked_habits:
@@ -313,6 +356,7 @@ class ApplicationGui:
         self.habits_list.pack()
 
     def show_daily_habits(self):
+        """Method to show list of daily habits."""
         habits = self.analyzer.get_habits_with_same_period(period=Periodicity.DAILY)
         self.habits_list.delete(0, tk.END)
         for habit in habits:
@@ -320,6 +364,7 @@ class ApplicationGui:
         self.habits_list.pack()
 
     def show_weekly_habits(self):
+        """Method to show list of weekly habits."""
         habits = self.analyzer.get_habits_with_same_period(period=Periodicity.WEEKLY)
         self.habits_list.delete(0, tk.END)
         for habit in habits:
@@ -327,6 +372,7 @@ class ApplicationGui:
         self.habits_list.pack()
 
     def show_longest_streak_all(self):
+        """Method to disply all habits and their longest streak"""
         longest_streak = self.analyzer.get_longest_streak_all()
         self.habits_list.delete(0, tk.END)
         header = f"{'Habit'.ljust(20)}   {'Longest Streak'.rjust(10)}"
