@@ -1,3 +1,4 @@
+from datetime import date
 import os
 import pytest
 import json
@@ -9,8 +10,8 @@ from habittracker.database import FileDataStorage, JSONDatabase
 
 @pytest.fixture
 def sample_habits():
-    daily_habit = DailyHabit("Reading", "30 mins")
-    weekly_habit = WeeklyHabit("Cleaning", "house")
+    daily_habit = DailyHabit("Reading", "30 mins", date.today())
+    weekly_habit = WeeklyHabit("Cleaning", "house", date.today())
     return {"reading": daily_habit, "cleaning": weekly_habit}
 
 
@@ -19,6 +20,7 @@ def json_db(tmp_path):
     filename = tmp_path / "test.json"
     return JSONDatabase(filename)
 
+
 @pytest.fixture
 def storage():
     filename = "test_fds.json"
@@ -26,13 +28,16 @@ def storage():
     if os.path.exists(filename):
         os.remove(filename)
 
+
 def test_save_data_abstract(storage):
     with pytest.raises(NotImplementedError):
         storage.save_data()
 
+
 def test_retrieve_data_abstract(storage):
     with pytest.raises(NotImplementedError):
         storage.retrieve_data()
+
 
 def test_save_data(json_db, sample_habits):
     json_db.save_data(sample_habits)
@@ -43,8 +48,6 @@ def test_save_data(json_db, sample_habits):
         assert data["reading"]["class_name"] == "DailyHabit"
         assert data["cleaning"]["name"] == "Cleaning"
         assert data["cleaning"]["class_name"] == "WeeklyHabit"
-
-
 
 
 def test_retrieve_data(json_db, sample_habits):
@@ -73,7 +76,7 @@ def test_retrieve_data_filenotfound(tmp_path):
     assert habits == {}  # return null set on failure
 
 
-def test_save_data_filenot_found(tmp_path,sample_habits):
+def test_save_data_filenot_found(tmp_path, sample_habits):
     bad_path = tmp_path / "dirnonexistent" / "habits.json"
     hds = JSONDatabase(bad_path)
     with pytest.raises(FileNotFoundError):

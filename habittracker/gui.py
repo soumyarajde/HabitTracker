@@ -1,3 +1,4 @@
+from datetime import date
 import tkinter as tk
 from tkinter import ttk
 from habittracker.constants import Periodicity, AnalyzerOptions
@@ -16,6 +17,7 @@ class ApplicationGui:
         manager:HabitManager object
         analyzer:HabitAnalyzer object
     """
+
     def __init__(self, gui):
         """
         Initializes ApplicationGui object by setting up the main window.
@@ -55,7 +57,7 @@ class ApplicationGui:
         It creates a top label to show welcome message,
         two lists to show pending daily and weekly and
         labels for each list.
-        Args: 
+        Args:
             tab:reference to Tk frame
         """
         # Top label
@@ -72,7 +74,7 @@ class ApplicationGui:
         )
         label_pending_today.pack(anchor="w")
         self.listbox_pending_today = tk.Listbox(self.pending_today)
-        pending_habits = self.manager.view_pending_habits_daily()
+        pending_habits = self.manager.view_pending_habits_daily(date.today())
         for habit in pending_habits:
             self.listbox_pending_today.insert(tk.END, habit.upper())
             self.listbox_pending_today.pack(fill="both", expand=True)
@@ -84,7 +86,7 @@ class ApplicationGui:
         )
         label_pending_this_week.pack(anchor="w")
         self.listbox_pending_this_week = tk.Listbox(self.pending_this_week)
-        pending_habits = self.manager.view_pending_habits_weekly()
+        pending_habits = self.manager.view_pending_habits_weekly(date.today())
         for habit in pending_habits:
             self.listbox_pending_this_week.insert(tk.END, habit.upper())
             self.listbox_pending_this_week.pack(fill="both", expand=True)
@@ -94,7 +96,7 @@ class ApplicationGui:
         Method to define the habit manager tab.Creates two buttons 'create new' and view.
         Setting up frames for create form fields and list of habits container which appers
         on clicking create new and view buttons respectively.
-        Args: 
+        Args:
             tab:reference to Tk frame
         """
 
@@ -170,7 +172,10 @@ class ApplicationGui:
         else:
             try:
                 self.manager.create_habit(
-                    name=name, description=desc, periodicity=Periodicity(period)
+                    name=name,
+                    description=desc,
+                    periodicity=Periodicity(period),
+                    creation_date=date.today(),
                 )
                 messagebox.showinfo("Success", f"Habit {name} created successfully.")
             except ValueError as e:
@@ -223,7 +228,7 @@ class ApplicationGui:
 
     def check_off(self, name):
         try:
-            self.manager.check_off(name)
+            self.manager.check_off(name, date.today())
             self.show_habits()
         except ValueError as e:
             messagebox.showerror("Error", e)
@@ -238,7 +243,7 @@ class ApplicationGui:
     def build_analyzer_tab(self, tab):
         """
         Method to define the analyzer tab.
-        Args: 
+        Args:
             tab:reference to Tk frame
         """
         # create a drop down
@@ -319,7 +324,9 @@ class ApplicationGui:
         """Method to show current streak of selected habit."""
         habit_name = self.habit_list_drop_down.get()
         try:
-            current_streak = self.analyzer.get_streak(name=habit_name)
+            current_streak = self.analyzer.get_streak(
+                name=habit_name, calculation_date=date.today()
+            )
             self.result_label.configure(
                 text=f"Current streak of {habit_name} : {current_streak}",
                 foreground="green",

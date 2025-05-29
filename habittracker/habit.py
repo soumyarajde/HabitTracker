@@ -19,7 +19,7 @@ class Habit:
         self,
         name=None,
         description=None,
-        creation_date=datetime.today().date(),
+        creation_date=None,
         active=True,
     ):
         """
@@ -35,7 +35,7 @@ class Habit:
         self.creation_date = creation_date
         self.completed_dates = []
         self.active = active
-      
+
     def serialize(self):
         """
         Convert Habit class object into json serializable dictionary.
@@ -80,17 +80,17 @@ class Habit:
         """Returns the string representation of an object."""
         return f"{self.__class__.__name__}(Name:{self.name}, Description:{self.description}, Creation_date:{self.creation_date}, Completed_dates:{self.completed_dates}, Active:{self.active})"
 
-    def check_off(self, date=datetime.today().date()):
+    def check_off(self, check_off_date):
         """
         Add the check off date of a habit to the completed_dates list.
         Args:
-            date(date).Date on which habit is done.
+            check_off_date(date):Date on which habit is done.
         Raises:
             ValueError if the habit is inactive.
         """
         if self.active:
-            self.completed_dates.append(date)
-            logger.debug(f"checking of habit: {self.name} on date:{date}")
+            self.completed_dates.append(check_off_date)
+            logger.debug(f"checking of habit: {self.name} on date:{check_off_date}")
         else:
             logging.error(f"Habit:{self.name} is inactive.")
             raise ValueError("Inactive Habit!")

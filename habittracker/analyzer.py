@@ -52,20 +52,23 @@ class HabitAnalyzer:
         self.manager = manager
         logger.debug(f"Initialized HabitAnalyser with habit manager {manager}")
 
-    def get_streak(self, name, date=date.today()):
+    def get_streak(self, name, calculation_date):
         """Method to calculate streak of a given habit.
         Args:
             name(string): name of a habit
-            date(date): date on which streak is to be calculated.
+            calculation_date(date): date on which streak is to be calculated.
         Raises:
-            ValueError("Habit does not exist."):If tries to calculate streak of a nonexistent habit.
+            ValueError(f"Habit: {name} does not exist."):If tries to calculate streak of a nonexistent habit.
+            ValueError("Invalid date give for streak calculation"): If calculation_date is not valid
         Returns:
             streak(integer):streak of a habit.
         """
-        logger.debug(f"Computing streak for habit {name} on date {date}")
+        logger.debug(f"Computing streak for habit {name} on date {calculation_date}")
+        if not isinstance(calculation_date, date):
+            raise ValueError("Invalid date give for streak calculation")
         # check for habit existence and call the calculate_streak function
         if name.lower() in self.manager.habits:
-            return self.manager.habits[name.lower()].calculate_streak(date)
+            return self.manager.habits[name.lower()].calculate_streak(calculation_date)
         # when habit does not exist raise error
         else:
             logger.error(f"Habit {name} not found while calculating get_steak.")
@@ -88,7 +91,6 @@ class HabitAnalyzer:
         return list(habit_names)
 
     def get_habits_with_same_period(self, period):
-        
         """Method to filter habits with same periodicity.
         Args:
             period:Enum of Periodicity
@@ -103,9 +105,10 @@ class HabitAnalyzer:
             class_name = WeeklyHabit
 
         logger.debug(f"Fetching habits with same periodicity.")
-        # filter those active (name, Habit) pairs based on the period 
+        # filter those active (name, Habit) pairs based on the period
         _habits = filter(
-            lambda habit: isinstance(habit[1], class_name) and habit[1].active , self.manager.habits.items()
+            lambda habit: isinstance(habit[1], class_name) and habit[1].active,
+            self.manager.habits.items(),
         )
         # from each tuple pull out only name(key)
         _habits_names = list(map(lambda habit: habit[0], _habits))
@@ -169,12 +172,10 @@ class HabitAnalyzer:
         Returns:
             dictionary:{habit name:longest streak}"""
         logger.debug(f"Computing longest streak for all habits")
-        #filter active habits
-        active=filter(lambda habit:habit[1].active,self.manager.habits.items())
+        # filter active habits
+        active = filter(lambda habit: habit[1].active, self.manager.habits.items())
         # for each active habit call method to calculate longest streak
         # convert map object into dict
-        return dict(map(lambda habit:(habit[0],self.get_longest_streak(habit[0])),active))
-
-
-
-   
+        return dict(
+            map(lambda habit: (habit[0], self.get_longest_streak(habit[0])), active)
+        )

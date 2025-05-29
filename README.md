@@ -1,6 +1,6 @@
 # Habit Tracker App
 
-A python app to work create and manage habits. It creates daily and weekly habit objects and manages it.  Managing include check-off, deactivation, activation and deletion. It also allows analyzing the habits.
+A python app designed to  create and manage habits. It creates daily and weekly habit objects and manages it.  Managing include check-off, deactivation, activation and deletion. It also allows analyzing the habits.
 
 ## Table of Contents
 
@@ -87,12 +87,14 @@ By clicking on the *Analyzer* tab,you can get various information about the habi
 Example for habit creation and management using HabitManager class
 ```python
 from habittracker.habitmanager import HabitManager
+from habittracker.constants import Periodicity
+from datetime import date
 manager=HabitManager()
 # create habit
-manager.create_habit(name="Reading",description="30mins",periodicity="daily")
+manager.create_habit(name="Reading",description="30mins",periodicity=Periodicity.DAILY,creation_date=date.today())
 print(manager.get_habit("Reading"))
 # check-off habit
-manager.check_off("Reading")
+manager.check_off("Reading",date.today())
 # deactivate habit
 manager.deactivate_habit("Reading")
 #delete habit

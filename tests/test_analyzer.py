@@ -9,14 +9,17 @@ from habittracker.constants import Periodicity
 
 @pytest.fixture
 def test_analyzer():
-    filename="test_ha.json"
+    filename = "test_ha.json"
     # ensure file does not exist before creating tests, to sovle problems if file is not deleted somehow from last test run
     if os.path.exists(filename):
         os.remove(filename)
     hm = HabitManager(filename)
-    hm.create_habit(name="exercise",
-                    description="morning walk",
-                    periodicity=Periodicity.DAILY)
+    hm.create_habit(
+        name="exercise",
+        description="morning walk",
+        periodicity=Periodicity.DAILY,
+        creation_date=date(2025, 4, 20),
+    )
     hm.check_off("exercise", date(2025, 4, 21))
     hm.check_off("exercise", date(2025, 4, 22))
     hm.check_off("exercise", date(2025, 4, 23))
@@ -27,14 +30,14 @@ def test_analyzer():
     hm.check_off("exercise", date(2025, 4, 28))
     hm.check_off("exercise", date(2025, 4, 29))
     hm.check_off("exercise", date(2025, 4, 30))
-    hm.check_off("exercise", date(2025, 5,  1))
-    hm.check_off("exercise", date(2025, 5,  2))
-    hm.check_off("exercise", date(2025, 5,  3))
-    hm.check_off("exercise", date(2025, 5,  4))
-    hm.check_off("exercise", date(2025, 5,  5))
-    hm.check_off("exercise", date(2025, 5,  7))
-    hm.check_off("exercise", date(2025, 5,  8))
-    hm.check_off("exercise", date(2025, 5,  9))
+    hm.check_off("exercise", date(2025, 5, 1))
+    hm.check_off("exercise", date(2025, 5, 2))
+    hm.check_off("exercise", date(2025, 5, 3))
+    hm.check_off("exercise", date(2025, 5, 4))
+    hm.check_off("exercise", date(2025, 5, 5))
+    hm.check_off("exercise", date(2025, 5, 7))
+    hm.check_off("exercise", date(2025, 5, 8))
+    hm.check_off("exercise", date(2025, 5, 9))
     hm.check_off("exercise", date(2025, 5, 10))
     hm.check_off("exercise", date(2025, 5, 11))
     hm.check_off("exercise", date(2025, 5, 12))
@@ -47,9 +50,12 @@ def test_analyzer():
     hm.check_off("exercise", date(2025, 5, 19))
     hm.check_off("exercise", date(2025, 5, 20))
 
-    hm.create_habit(name="sleeping",
-                    description="8 hours",
-                    periodicity=Periodicity.DAILY)
+    hm.create_habit(
+        name="sleeping",
+        description="8 hours",
+        periodicity=Periodicity.DAILY,
+        creation_date=date(2025, 4, 20),
+    )
     hm.check_off("sleeping", date(2025, 4, 21))
     hm.check_off("sleeping", date(2025, 4, 22))
     hm.check_off("sleeping", date(2025, 4, 23))
@@ -60,13 +66,13 @@ def test_analyzer():
     hm.check_off("sleeping", date(2025, 4, 28))
     hm.check_off("sleeping", date(2025, 4, 29))
     hm.check_off("sleeping", date(2025, 4, 30))
-    hm.check_off("sleeping", date(2025, 5,  2))
-    hm.check_off("sleeping", date(2025, 5,  3))
-    hm.check_off("sleeping", date(2025, 5,  4))
-    hm.check_off("sleeping", date(2025, 5,  5))
-    hm.check_off("sleeping", date(2025, 5,  6))
-    hm.check_off("sleeping", date(2025, 5,  7))
-    hm.check_off("sleeping", date(2025, 5,  8))
+    hm.check_off("sleeping", date(2025, 5, 2))
+    hm.check_off("sleeping", date(2025, 5, 3))
+    hm.check_off("sleeping", date(2025, 5, 4))
+    hm.check_off("sleeping", date(2025, 5, 5))
+    hm.check_off("sleeping", date(2025, 5, 6))
+    hm.check_off("sleeping", date(2025, 5, 7))
+    hm.check_off("sleeping", date(2025, 5, 8))
     hm.check_off("sleeping", date(2025, 5, 11))
     hm.check_off("sleeping", date(2025, 5, 12))
     hm.check_off("sleeping", date(2025, 5, 13))
@@ -77,9 +83,12 @@ def test_analyzer():
     hm.check_off("sleeping", date(2025, 5, 19))
     hm.check_off("sleeping", date(2025, 5, 20))
 
-    hm.create_habit(name="drinking",
-                    description="2 ltrs water",
-                    periodicity=Periodicity.DAILY)
+    hm.create_habit(
+        name="drinking",
+        description="2 ltrs water",
+        periodicity=Periodicity.DAILY,
+        creation_date=date(2025, 4, 20),
+    )
 
     hm.check_off("drinking", date(2025, 4, 21))
     hm.check_off("drinking", date(2025, 4, 22))
@@ -89,15 +98,15 @@ def test_analyzer():
     hm.check_off("drinking", date(2025, 4, 27))
     hm.check_off("drinking", date(2025, 4, 28))
     hm.check_off("drinking", date(2025, 4, 29))
-    hm.check_off("drinking", date(2025, 5,  1))
-    hm.check_off("drinking", date(2025, 5,  2))
-    hm.check_off("drinking", date(2025, 5,  3))
-    hm.check_off("drinking", date(2025, 5,  4))
-    hm.check_off("drinking", date(2025, 5,  5))
-    hm.check_off("drinking", date(2025, 5,  6))
-    hm.check_off("drinking", date(2025, 5,  7))
-    hm.check_off("drinking", date(2025, 5,  8))
-    hm.check_off("drinking", date(2025, 5,  9))
+    hm.check_off("drinking", date(2025, 5, 1))
+    hm.check_off("drinking", date(2025, 5, 2))
+    hm.check_off("drinking", date(2025, 5, 3))
+    hm.check_off("drinking", date(2025, 5, 4))
+    hm.check_off("drinking", date(2025, 5, 5))
+    hm.check_off("drinking", date(2025, 5, 6))
+    hm.check_off("drinking", date(2025, 5, 7))
+    hm.check_off("drinking", date(2025, 5, 8))
+    hm.check_off("drinking", date(2025, 5, 9))
     hm.check_off("drinking", date(2025, 5, 10))
     hm.check_off("drinking", date(2025, 5, 12))
     hm.check_off("drinking", date(2025, 5, 13))
@@ -107,34 +116,49 @@ def test_analyzer():
     hm.check_off("drinking", date(2025, 5, 18))
     hm.check_off("drinking", date(2025, 5, 19))
 
-    hm.create_habit(name="cleaning",
-                    description="cleaning house",
-                    periodicity=Periodicity.WEEKLY)
+    hm.create_habit(
+        name="cleaning",
+        description="cleaning house",
+        periodicity=Periodicity.WEEKLY,
+        creation_date=date(2025, 4, 20),
+    )
     hm.check_off("cleaning", date(2025, 4, 22))
     hm.check_off("cleaning", date(2025, 4, 29))
     hm.check_off("cleaning", date(2025, 5, 13))
     hm.check_off("cleaning", date(2025, 5, 20))
 
-    hm.create_habit(name="shopping",
-                    description="for the week",
-                    periodicity=Periodicity.WEEKLY)
+    hm.create_habit(
+        name="shopping",
+        description="for the week",
+        periodicity=Periodicity.WEEKLY,
+        creation_date=date(2025, 4, 20),
+    )
     hm.check_off("shopping", date(2025, 4, 22))
     hm.check_off("shopping", date(2025, 4, 30))
-    hm.check_off("shopping", date(2025, 5,  6))
+    hm.check_off("shopping", date(2025, 5, 6))
     hm.check_off("shopping", date(2025, 5, 13))
 
-    hm.create_habit(name="reading",
-                    description="30 mins",
-                    periodicity=Periodicity.DAILY)
-    
-    hm.create_habit(name="inactive habit",
-                    description="30 mins",
-                    periodicity=Periodicity.DAILY)
+    hm.create_habit(
+        name="reading",
+        description="30 mins",
+        periodicity=Periodicity.DAILY,
+        creation_date=date(2025, 4, 20),
+    )
+
+    hm.create_habit(
+        name="inactive habit",
+        description="30 mins",
+        periodicity=Periodicity.DAILY,
+        creation_date=date(2025, 4, 20),
+    )
     hm.deactivate_habit("inactive habit")
 
-    hm.create_habit(name="repeating habit",
-                    description="description",
-                    periodicity=Periodicity.DAILY)
+    hm.create_habit(
+        name="repeating habit",
+        description="description",
+        periodicity=Periodicity.DAILY,
+        creation_date=date(2025, 4, 20),
+    )
     hm.check_off("repeating habit", date(2025, 5, 10))
     hm.check_off("repeating habit", date(2025, 5, 9))
     hm.check_off("repeating habit", date(2025, 5, 11))
@@ -148,24 +172,23 @@ def test_analyzer():
     hm.check_off("repeating habit", date(2025, 5, 21))
     hm.check_off("repeating habit", date(2025, 5, 22))
 
-    
-    hm.create_habit(name="repeating weekly habit",
-                    description="description",
-                    periodicity=Periodicity.WEEKLY)
+    hm.create_habit(
+        name="repeating weekly habit",
+        description="description",
+        periodicity=Periodicity.WEEKLY,
+        creation_date=date(2025, 4, 20),
+    )
     hm.check_off("repeating weekly habit", date(2025, 5, 10))
     hm.check_off("repeating weekly habit", date(2025, 5, 7))
     hm.check_off("repeating weekly habit", date(2025, 5, 13))
     hm.check_off("repeating weekly habit", date(2025, 5, 15))
     hm.check_off("repeating weekly habit", date(2025, 5, 21))
     hm.check_off("repeating weekly habit", date(2025, 5, 1))
-    
-    
 
     analyzer = HabitAnalyzer(hm)
     yield analyzer
     if os.path.exists(filename):
         os.remove(filename)
-
 
 
 def test_get_currently_tracked_habit(test_analyzer):
@@ -177,8 +200,7 @@ def test_get_currently_tracked_habit(test_analyzer):
         "shopping",
         "reading",
         "repeating habit",
-        "repeating weekly habit"
-
+        "repeating weekly habit",
     ]
     assert "inactive habit" not in test_analyzer.get_currently_tracked_habits()
 
@@ -189,15 +211,15 @@ def test_get_habits_with_same_period_daily(test_analyzer):
         "sleeping",
         "drinking",
         "reading",
-        "repeating habit"
-    ]  
+        "repeating habit",
+    ]
 
 
 def test_get_habits_with_same_period_weekly(test_analyzer):
     assert test_analyzer.get_habits_with_same_period(period=Periodicity.WEEKLY) == [
         "cleaning",
         "shopping",
-        "repeating weekly habit"
+        "repeating weekly habit",
     ]
 
 
@@ -217,7 +239,7 @@ def test_get_longest_streak_all(test_analyzer):
         "cleaning": 2,
         "reading": 0,
         "repeating habit": 5,
-        "repeating weekly habit":4,
+        "repeating weekly habit": 4,
     }
 
 
@@ -227,30 +249,39 @@ def test_longest_streak_non_existent_habit(test_analyzer):
     assert str(exc_info.value) == "Habit: nonexistent does not exist."
 
 
+def test_get_streak_invalid_date(test_analyzer):
+    with pytest.raises(ValueError) as exc_info:
+        test_analyzer.get_streak("sleeping", None)
+    assert str(exc_info.value) == "Invalid date give for streak calculation"
+
+
 def test_get_streak(test_analyzer):
-    assert test_analyzer.get_streak("sleeping", date=date(2025, 5, 20)) == 3
-    assert test_analyzer.get_streak("drinking", date=date(2025, 5, 20)) == 4
-    assert test_analyzer.get_streak("sleeping", date=date(2025, 5, 15)) == 5
-    assert test_analyzer.get_streak("shopping", date=date(2025, 5, 19)) == 4
-    assert test_analyzer.get_streak("cleaning", date=date(2025, 5, 15)) == 1
+    assert test_analyzer.get_streak("sleeping", date(2025, 5, 20)) == 3
+    assert test_analyzer.get_streak("drinking", date(2025, 5, 20)) == 4
+    assert test_analyzer.get_streak("sleeping", date(2025, 5, 15)) == 5
+    assert test_analyzer.get_streak("shopping", date(2025, 5, 19)) == 4
+    assert test_analyzer.get_streak("cleaning", date(2025, 5, 15)) == 1
+
 
 def test_get_streak_nonexisting_habit(test_analyzer):
     with pytest.raises(ValueError) as exc_info:
-        test_analyzer.get_streak("nonexistent", date=date(2025, 5, 20))
+        test_analyzer.get_streak("nonexistent", date(2025, 5, 20))
     assert str(exc_info.value) == "Habit: nonexistent does not exist."
 
 
 def test_get_streak_repeating_dates_daily(test_analyzer):
-    assert test_analyzer.get_streak("repeating habit", date=date(2025, 5, 21)) == 2
-    assert test_analyzer.get_streak("repeating habit", date=date(2025, 5, 22)) == 3
+    assert test_analyzer.get_streak("repeating habit", date(2025, 5, 21)) == 2
+    assert test_analyzer.get_streak("repeating habit", date(2025, 5, 22)) == 3
+
 
 def test_get_longest_streak_repeating_daily(test_analyzer):
     assert test_analyzer.get_longest_streak("repeating habit") == 5
 
+
 def test_get_streak_repeating_dates_weekly(test_analyzer):
-    assert test_analyzer.get_streak("repeating weekly habit", date=date(2025, 5, 21)) == 4
-    assert test_analyzer.get_streak("repeating weekly habit", date=date(2025, 5, 15)) == 3
+    assert test_analyzer.get_streak("repeating weekly habit", date(2025, 5, 21)) == 4
+    assert test_analyzer.get_streak("repeating weekly habit", date(2025, 5, 15)) == 3
 
 
 def test_get_streak_no_completion(test_analyzer):
-    assert test_analyzer.get_streak("reading") == 0
+    assert test_analyzer.get_streak("reading", date.today()) == 0

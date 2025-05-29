@@ -1,4 +1,4 @@
-from datetime import datetime, date, timedelta
+from datetime import  date, timedelta
 from habittracker.habit import Habit
 import logging
 
@@ -8,27 +8,29 @@ logger = logging.getLogger(__name__)
 class WeeklyHabit(Habit):
     """A subclass of Habit class which represents weekly habit."""
 
-    def __init__(
-        self, name, description, creation_date=datetime.today().date(), active=True
-    ):
+    def __init__(self, name, description, creation_date=None, active=True):
         super().__init__(name, description, creation_date, active)
         logger.debug(
             f"Initializes WeeklyHabit object with name:{self.name},description: {self.description},creation_date: {self.creation_date},active: {active}"
         )
 
-    def calculate_streak(self, date=date.today()):
+    def calculate_streak(self, calculation_date):
         """
         Method to calculate  current streak of a weekly habit.If no check off for current week return streak upto previous week.
         Args:
-            date(date):date on which streak has to be calculated.
+            calculation_date(date):date on which streak has to be calculated.
         Returns:
             streak(integer):streak of a habit.
+        Raises:
+            ValueError("Invalid date for streak calculation"): if invalid date is passed
         """
+        if not isinstance(calculation_date, date):
+            raise ValueError("Invalid date for streak calculation")
         # if completed dates is empty streak is zero
         if not self.completed_dates:
             return 0
         streak = 0
-        today = date
+        today = calculation_date
         # eliminate duplicate entries by converting into set
         completed_dates = set(self.completed_dates)
         # starts checking from the current week and go backward.
@@ -59,5 +61,5 @@ class WeeklyHabit(Habit):
                 current_week_end -= timedelta(days=7)
             else:
                 break
-        logger.info(f"streak for habit:{self.name} on {date} is {streak}")
+        logger.info(f"streak for habit:{self.name} on {calculation_date} is {streak}")
         return streak

@@ -5,13 +5,13 @@ from habittracker.habit import Habit
 
 @pytest.fixture
 def test_habit():
-    return Habit(name="Reading", description="30 mins",creation_date=date(2025,5,1))
+    return Habit(name="Reading", description="30 mins", creation_date=date(2025, 5, 1))
 
 
 def test_initialization(test_habit):
     assert test_habit.name == "Reading"
     assert test_habit.description == "30 mins"
-    assert test_habit.creation_date==date(2025,5,1)
+    assert test_habit.creation_date == date(2025, 5, 1)
     assert isinstance(test_habit.creation_date, date)
     assert test_habit.completed_dates == []
     assert test_habit.active is True
@@ -35,7 +35,7 @@ def test_check_off_deactivated_habit(test_habit):
     # first deactivate a habit and then try to check off it.
     test_habit.deactivate_habit()
     with pytest.raises(ValueError) as exc_info:
-        test_habit.check_off()
+        test_habit.check_off(datetime.today().date())
     assert str(exc_info.value) == "Inactive Habit!"
 
 
@@ -53,12 +53,14 @@ def test_serialize_deserialize(test_habit):
     assert restored_habit.active == test_habit.active
     assert isinstance(restored_habit, Habit)
 
+
 def test_calculate_streak(test_habit):
     with pytest.raises(NotImplementedError) as exc_info:
         test_habit.calculate_streak()
 
+
 def test_repr_exact_string(test_habit):
-    test_habit.check_off(date=date(2025,5,21))
+    test_habit.check_off(check_off_date=date(2025, 5, 21))
     expected = (
         "Habit("
         "Name:Reading, "
@@ -67,6 +69,8 @@ def test_repr_exact_string(test_habit):
         "Completed_dates:[datetime.date(2025, 5, 21)], "
         "Active:True)"
     )
-    assert repr(test_habit)==expected
+    assert repr(test_habit) == expected
+
+
 if __name__ == "__main__":
     pytest.main()
