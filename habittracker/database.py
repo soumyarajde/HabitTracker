@@ -31,7 +31,7 @@ class FileDataStorage:
         raise NotImplementedError
 
 
-class JsonDatabase(FileDataStorage):
+class JSONDatabase(FileDataStorage):
     """Represents a subclass of class FileDataStorage which stores data in json file."""
 
     def __init__(self, filename):

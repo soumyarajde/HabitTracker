@@ -1,7 +1,7 @@
 from datetime import date, timedelta
 from habittracker.dailyhabit import DailyHabit
 from habittracker.weeklyhabit import WeeklyHabit
-from habittracker.database import JsonDatabase
+from habittracker.database import JSONDatabase
 from habittracker.constants import Periodicity
 import logging
 
@@ -21,7 +21,7 @@ class HabitManager:
         """
         logger.debug(f"Initializing Habit Manager")
         self._habits = dict()
-        self.database = JsonDatabase(str(filename))
+        self.database = JSONDatabase(str(filename))
         self._habits = self.database.retrieve_data()
         logger.debug(f"Loading database from {filename}")
 

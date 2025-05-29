@@ -4,7 +4,7 @@ import json
 from habittracker.habit import Habit
 from habittracker.dailyhabit import DailyHabit
 from habittracker.weeklyhabit import WeeklyHabit
-from habittracker.database import FileDataStorage, JsonDatabase
+from habittracker.database import FileDataStorage, JSONDatabase
 
 
 @pytest.fixture
@@ -17,7 +17,7 @@ def sample_habits():
 @pytest.fixture
 def json_db(tmp_path):
     filename = tmp_path / "test.json"
-    return JsonDatabase(filename)
+    return JSONDatabase(filename)
 
 @pytest.fixture
 def storage():
@@ -60,7 +60,7 @@ def test_retrieve_data_invalid_file(tmp_path):
     # create an invalid file.
     filename = tmp_path / "dummy_file.json"
     filename.write_text("This is not json data.")
-    db = JsonDatabase(str(filename))  # load data using habit database.
+    db = JSONDatabase(str(filename))  # load data using habit database.
     habits = db.retrieve_data()
     assert habits == {}  # return null set on failure
 
@@ -68,13 +68,13 @@ def test_retrieve_data_invalid_file(tmp_path):
 def test_retrieve_data_filenotfound(tmp_path):
     # create an invalid file.
     filename = tmp_path / "jj.json"
-    db = JsonDatabase(str(filename))  # load data using habit database.
+    db = JSONDatabase(str(filename))  # load data using habit database.
     habits = db.retrieve_data()
     assert habits == {}  # return null set on failure
 
 
 def test_save_data_filenot_found(tmp_path,sample_habits):
     bad_path = tmp_path / "dirnonexistent" / "habits.json"
-    hds = JsonDatabase(bad_path)
+    hds = JSONDatabase(bad_path)
     with pytest.raises(FileNotFoundError):
         hds.save_data(sample_habits)
